@@ -62,19 +62,10 @@
             <img src="/hero_images/V3.png" alt="Hero Image 30">
             <img src="/hero_images/V4.png" alt="Hero Image 31">
             <img src="/hero_images/V5.png" alt="Hero Image 32">
-            <!--<img src="/hero_images/V6.png" alt="Hero Image 33">-->
             <img src="/hero_images/V7.png" alt="Hero Image 34">
-            <!--<img src="/hero_images/V8.png" alt="Hero Image 35">-->
             <img src="/hero_images/V10.png" alt="Hero Image 36">
             <img src="/hero_images/V11.png" alt="Hero Image 37">
             <img src="/hero_images/V12.png" alt="Hero Image 38">
-            <!-- <img src="/hero_images/H1.png" alt="Hero Image 39">
-            <img src="/hero_images/H2.png" alt="Hero Image 40">
-            <img src="/hero_images/H3.png" alt="Hero Image 41">
-            <img src="/hero_images/H4.png" alt="Hero Image 42">
-            <img src="/hero_images/S1.png" alt="Hero Image 43">
-            <img src="/hero_images/S2.png" alt="Hero Image 44"> -->
-            
 
         </section>
 
@@ -90,9 +81,6 @@
 
         <section class="products">
             <div class="product-grid">
-                <!-- Product items go here -->
-                <!-- Example for one product -->
-                <!-- T-Shirts -->
                 <div class="product-item">
                     <div class="product-image">
                         <img src="/merch_item_price/Front Tshirt_tech unit.png" alt="T-shirt (Black)">
@@ -339,58 +327,12 @@
                 
 
                 
-                <!-- Repeat for other products -->
-            </div>
-        </section>
-        <!-- 
-        <section class="products">
-            <h2 class="special-merch-text" style="text-align: center;">This is special merch</h2>
-            <div class="product-grid">
-                 
-                <div class="product-item">
-                    <div class="product-image">
-                        <img src="/merch_item_price/SPECIAL BLACK IN FRONT.png" alt="Special Merch 1">
-                    </div>
-                    <div class="product-details">
-                        <h3>Hoodie (White Off)</h3>
-                        <div class="price">
-                            <span>13,000</span>
-                        </div>
-                    </div>
-                </div>
-
-               
-                <div class="product-item">
-                    <div class="product-image">
-                        <img src="/merch_item_price/SPECIAL BROWN SWEAT SHIRT FRONT.png" alt="Special Merch 2">
-                    </div>
-                    <div class="product-details">
-                        <h3>Sweatshirt (Brown)</h3>
-                        <div class="price">
-                            <span>10,000</span>
-                        </div>
-                    </div>
-                </div>
-
                 
-                <div class="product-item">
-                    <div class="product-image">
-                        <img src="/merch_item_price/SPECIAL WHITE IN FRONT.png" alt="Special Merch 3">
-                    </div>
-                    <div class="product-details">
-                        <h3>Hoodie (Black Off)</h3>
-                        <div class="price">
-                            <span>13,000</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
-        -->
-        
-
+    
+    
         <section class="pre-order">
-            <!-- <button class="pre-order-btn">Pre-order</button> -->
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHMpEoawxlwc7Fd1YLfLpEBWd8INgFD64yWXh1me0Vhwj84Q/viewform?usp=header" class="pre-order-btn">Order</a>
         </section>
 
@@ -423,7 +365,7 @@
             <div class="footer-bottom">
                 <p>© 2025 Technical Unit Bowen Baptist Student Fellowship</p>
                 <div class="social-icons">
-                    <!-- Social icons SVG here -->
+                
                 </div>
             </div>
         </footer>
@@ -435,7 +377,7 @@
             let newIndex;
             do {
                 newIndex = Math.floor(Math.random() * totalImages);
-            } while (newIndex === currentIndex); // Ensure the same image doesn't repeat
+            } while (newIndex === currentIndex); 
             return newIndex;
         }
     
@@ -444,27 +386,16 @@
             let currentIndex = Array.from(images).indexOf(currentActive);
             let nextIndex = getRandomIndex(currentIndex, images.length);
     
-            // Fade out the current image
+    
             currentActive.classList.remove("active");
     
-            // Fade in the next image
+          
             images[nextIndex].classList.add("active");
         }
     
-        // Start the image transition
-        setInterval(changeImage, 3000); // Change image every 3 seconds
+     
+        setInterval(changeImage, 3000); 
     </script>
-    <!--<script>
-        let index = 0;
-        const images = document.querySelectorAll(".hero img");
-    
-        function changeImage() {
-            images[index].classList.remove("active");
-            index = (index + 1) % images.length;
-            images[index].classList.add("active");
-        }
-    
-        setInterval(changeImage, 3000); // Change image every 3 seconds
-    </script>-->
+
 </body>
 </html>
