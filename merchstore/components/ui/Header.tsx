@@ -42,13 +42,13 @@ export default function Example() {
 					<div className="hidden lg:flex lg:flex-1 lg:justify-end gap-8">
 						<a
 							href="#"
-							className="text-sm/6 font-semibold text-gray-900 border-2 rounded-full p-1"
+							className="text-sm/6 font-semibold text-gray-900 border-2 border-gray-300 rounded-full p-1"
 						>
 							<Search />
 						</a>
 						<a
 							href="#"
-							className="text-sm/6 font-semibold text-gray-900 border-2 rounded-full p-1"
+							className="text-sm/6 font-semibold text-gray-900 border-2 rounded-full p-1 border-gray-300"
 						>
 							<ShoppingCart />
 						</a>

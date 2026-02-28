@@ -1,4 +1,5 @@
 import Image from "next/image";
+import CTASection from "@/components/home/CTASection"
 
 export default function Hero() {
 	return (
@@ -11,6 +12,7 @@ export default function Hero() {
 					width={600}
 				/>
 			</div>
+			<CTASection />
 		</div>
 	);
 }
