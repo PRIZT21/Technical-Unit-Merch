@@ -1,6 +1,8 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { products } from "@/lib/products";
+import { useState } from "react";
 // const products = [
 //   {
 //     id: 1,
@@ -95,11 +97,26 @@ import { products } from "@/lib/products";
 // ];
 
 export default function ProductList() {
+  const [selectedColor, setSelectedColor] = useState<string | null>(null)
+  const [selectedSize, setSelectedSize] = useState<string | null>(null)
+  
+const filteredProducts = products.map(product => ({
+  ...product,
+  variants: product.variants.filter(variant => {
+    const colorMatch = selectedColor ? variant.color === selectedColor : true
+    const sizeMatch = selectedSize
+      ? variant.sizes.includes(selectedSize)
+      : true
+
+    return colorMatch && sizeMatch
+  })
+})).filter(product => product.variants.length > 0)
+
 	return (
 		<div className="bg-white">
 			<div className="mx-auto px-4 sm:px-6 sm:pb-24  lg:px-8">
 				<div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-					{products.map((product) =>
+					{filteredProducts.map((product) =>
 						product.variants.map((variant, variantIndex) => (
 							<div
 								key={`${product.id}-${variantIndex}`}
@@ -111,7 +128,7 @@ export default function ProductList() {
 									className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
 								/>
 
-								<div className="mt-4 flex justify-between">
+								<div className="mt-4 flex justify-between px-4">
 									<div>
 										<h3 className="text-2xl font-bold">
 											<a href={product.href}>
