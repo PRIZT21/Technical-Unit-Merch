@@ -5,7 +5,7 @@ import { Handbag, Palette, Scaling } from "lucide-react";
 export default function CategoriesSection() {
 	return (
 		<>
-			<div className="flex justify-between items-start mt-16 mx-32">
+			<div className="flex gap-8 items-start mt-16 mx-32">
 				<div>
 					<h3 className="text-3xl font-bold">Category</h3>
 					<div>
