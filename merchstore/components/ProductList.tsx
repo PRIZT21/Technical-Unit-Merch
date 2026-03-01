@@ -1,116 +1,27 @@
-'use client'
+
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { products } from "@/lib/products";
-import { useState } from "react";
-// const products = [
-//   {
-//     id: 1,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "₦5,500",
-//     color: "Black",
-//     size: "M",
-//   },
-//   {
-//     id: 2,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
-//     imageAlt: "Front of men's Basic Tee in white.",
-//     price: "₦5,800",
-//     color: "Aspen White",
-//     size: "M",
-//   },
-//   {
-//     id: 3,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
-//     imageAlt: "Front of men's Basic Tee in dark gray.",
-//     price: "₦6,000",
-//     color: "Charcoal",
-//     size: "M",
-//   },
-//   {
-//     id: 4,
-//     name: "Artwork Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
-//     imageAlt:
-//       "Front of men's Artwork Tee in peach with white and brown dots forming an isometric cube.",
-//     price: "₦6,500",
-//     color: "Iso Dots",
-//     size: "M",
-//   },
-//   {
-//     id: 5,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "₦5,700",
-//     color: "Black",
-//     size: "L",
-//   },
-//   {
-//     id: 6,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
-//     imageAlt: "Front of men's Basic Tee in white.",
-//     price: "₦6,200",
-//     color: "Aspen White",
-//     size: "L",
-//   },
-//   {
-//     id: 7,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
-//     imageAlt: "Front of men's Basic Tee in dark gray.",
-//     price: "₦6,800",
-//     color: "Charcoal",
-//     size: "L",
-//   },
-//   {
-//     id: 8,
-//     name: "Artwork Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
-//     imageAlt:
-//       "Front of men's Artwork Tee in peach with white and brown dots forming an isometric cube.",
-//     price: "₦7,000",
-//     color: "Iso Dots",
-//     size: "L",
-//   },
-// ];
 
-export default function ProductList() {
-  const [selectedColor, setSelectedColor] = useState<string | null>(null)
-  const [selectedSize, setSelectedSize] = useState<string | null>(null)
   
-const filteredProducts = products.map(product => ({
-  ...product,
-  variants: product.variants.filter(variant => {
-    const colorMatch = selectedColor ? variant.color === selectedColor : true
-    const sizeMatch = selectedSize
-      ? variant.sizes.includes(selectedSize)
-      : true
+export default function ProductList({ selectedColor, selectedSize }: { selectedColor: string; selectedSize: string }) {
+	const [colorValue, setColorValue] = useState<string>(selectedColor);
+	const [sizeValue, setSizeValue] = useState<string>(selectedSize);
 
-    return colorMatch && sizeMatch
-  })
-})).filter(product => product.variants.length > 0)
+	const filteredProducts = products.map(product => ({
+		...product,
+		variants: product.variants.filter(variant => {
+			const colorMatch = colorValue ? variant.color === colorValue : true
+			const sizeMatch = sizeValue
+				? variant.sizes.includes(sizeValue)
+				: true
+
+			return colorMatch && sizeMatch
+		})
+	})).filter(product => product.variants.length > 0)
 
 	return (
 		<div className="bg-white">
