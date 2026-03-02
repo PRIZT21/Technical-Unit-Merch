@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Product } from "@/lib/products";
+import { useStore } from "@/lib/store/useStore";
+import { Button } from "@/components/ui/button";
 
 type ProductOverviewProps = {
 	product: Product;
@@ -25,6 +27,20 @@ export default function ProductOverview({
 	const [selectedSize, setSelectedSize] = useState(
 		product.variants[variantIndex]?.sizes[0] ?? "",
 	);
+
+	const addToCart = useStore((state) => state.addToCart);
+
+	const cart = useStore((state) => state.cart);
+	console.log(cart);
+	const handleAddToCart = () => {
+		addToCart({
+			productId: product.id,
+			variantId: selectedVariantIndex.toString(),
+			size: selectedSize,
+			quantity: 1,
+		});
+	};
+
 	const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 	const touchStartX = useRef<number | null>(null);
 	const touchEndX = useRef<number | null>(null);
@@ -250,12 +266,13 @@ export default function ProductOverview({
 									</div>
 								</div>
 
-								<button
+								<Button
 									type="button"
-									className="mt-10 flex w-full items-center justify-center rounded-md bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700"
+									className="mt-10 flex w-full items-center justify-center rounded-md bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 cursor-pointer"
+									onClick={handleAddToCart}
 								>
 									Add to bag
-								</button>
+								</Button>
 							</div>
 						</div>
 					</div>

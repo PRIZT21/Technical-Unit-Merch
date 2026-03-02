@@ -9,6 +9,7 @@ import { Search, ShoppingCart } from "lucide-react";
 import Cart from "@/components/Cart";
 import Badge, { BadgeProps } from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
+import {useStore} from "@/lib/store/useStore"
 
 export default function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -23,10 +24,14 @@ export default function Header() {
   },
 }));
 
+	const cart = useStore((state) => state.cart);
+
+	const totalItems = cart.length;
+
 	return (
 		<div className="">
 			<Cart open={open} setOpen={setOpen} />
-			<header className="absolute inset-x-0 top-0 z-20">
+			<header className="fixed inset-x-0 top-0 z-20">
 				<nav
 					aria-label="Global"
 					className="flex items-center justify-between mx-32 lg:px-8 bg-white rounded-b-xl py-4"
@@ -60,7 +65,7 @@ export default function Header() {
 						>
 							<Search />
 						</a>
-						<StyledBadge badgeContent={4} color="secondary">
+						<StyledBadge badgeContent={totalItems} color="secondary">
 							<a
 								onClick={() => setOpen(true)}
 								className="text-sm/6 font-semibold text-gray-900 border-2 rounded-full p-1 border-gray-300 cursor-pointer"
