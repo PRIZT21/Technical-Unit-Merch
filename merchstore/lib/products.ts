@@ -12,7 +12,7 @@ export type Product = {
 	id: string;
 	name: string;
 	price: string;
-	href: string;
+	// href: string;
 	variants: ProductVariant[];
 };
 
@@ -21,7 +21,7 @@ export const products: Product[] = [
 		id: "tshirt",
 		name: "T-Shirt",
 		price: "₦7,000",
-		href: "#",
+		// href: "#",
 		variants: [
 			{
 				id: "tshirt-black",
@@ -51,7 +51,7 @@ export const products: Product[] = [
 		id: "sweatshirt",
 		name: "Sweatshirt",
 		price: "₦10,500",
-		href: "#",
+		// href: "#",
 		variants: [
 			{
 				id: "sweatshirt-black",
@@ -70,7 +70,7 @@ export const products: Product[] = [
 		id: "varsity-jacket",
 		name: "Varsity Jacket",
 		price: "₦12,500",
-		href: "#",
+		// href: "#",
 		variants: [
 			{
 				id: "varsity-jacket-black",
@@ -89,7 +89,7 @@ export const products: Product[] = [
 		id: "hoodie",
 		name: "Light Bearers Hoodie",
 		price: "₦13,500",
-		href: "#",
+		// href: "#",
 		variants: [
 			{
 				id: "hoodie-black",
