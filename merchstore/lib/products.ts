@@ -87,7 +87,7 @@ export const products: Product[] = [
 	},
 	{
 		id: "hoodie",
-		name: "Light Bearers Hoodie",
+		name: "Hoodie",
 		price: "₦13,500",
 		// href: "#",
 		variants: [

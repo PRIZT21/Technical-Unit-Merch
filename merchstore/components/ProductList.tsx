@@ -6,31 +6,18 @@ import { ShoppingCart } from "lucide-react";
 import { products } from "@/lib/products";
 import ProductOverview from "@/components/ProductOverview";
 
-export default function ProductList({
-	selectedColor,
-	selectedSize,
-}: {
-	selectedColor: string;
-	selectedSize: string;
+export default function ProductList({filteredProducts, selectedColor, selectedSize}: {
+	filteredProducts: typeof products;
+	selectedColor: string | null;
+	selectedSize: string | null;
 }) {
-	const [colorValue, setColorValue] = useState<string>(selectedColor);
-	const [sizeValue, setSizeValue] = useState<string>(selectedSize);
+	// const [colorValue, setColorValue] = useState<string>(selectedColor);
+	// const [sizeValue, setSizeValue] = useState<string>(selectedSize);
 	const [selectedProduct, setSelectedProduct] = useState<null | {
 		productId: string;
 		variantIndex: number;
 	}>(null);
 
-	const filteredProducts = products
-		.map((product) => ({
-			...product,
-			variants: product.variants.filter((variant) => {
-				const colorMatch = colorValue ? variant.color === colorValue : true;
-				const sizeMatch = sizeValue ? variant.sizes.includes(sizeValue) : true;
-
-				return colorMatch && sizeMatch;
-			}),
-		}))
-		.filter((product) => product.variants.length > 0);
 
 	return (
 		<div className="bg-white">
@@ -57,7 +44,9 @@ export default function ProductList({
 								<div className="mt-4 flex justify-between px-4">
 									<div>
 										<h3 className="text-2xl font-bold">
-											<a href={product.href}>
+											<a
+												// href={product.href}
+											>
 												<span aria-hidden="true" className="absolute inset-0" />
 												{product.name}
 											</a>
