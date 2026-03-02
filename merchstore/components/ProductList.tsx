@@ -1,27 +1,36 @@
-
 "use client";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { products } from "@/lib/products";
+import ProductOverview from "@/components/ProductOverview";
 
-  
-export default function ProductList({ selectedColor, selectedSize }: { selectedColor: string; selectedSize: string }) {
+export default function ProductList({
+	selectedColor,
+	selectedSize,
+}: {
+	selectedColor: string;
+	selectedSize: string;
+}) {
 	const [colorValue, setColorValue] = useState<string>(selectedColor);
 	const [sizeValue, setSizeValue] = useState<string>(selectedSize);
+	const [selectedProduct, setSelectedProduct] = useState<null | {
+		productId: string;
+		variantIndex: number;
+	}>(null);
 
-	const filteredProducts = products.map(product => ({
-		...product,
-		variants: product.variants.filter(variant => {
-			const colorMatch = colorValue ? variant.color === colorValue : true
-			const sizeMatch = sizeValue
-				? variant.sizes.includes(sizeValue)
-				: true
+	const filteredProducts = products
+		.map((product) => ({
+			...product,
+			variants: product.variants.filter((variant) => {
+				const colorMatch = colorValue ? variant.color === colorValue : true;
+				const sizeMatch = sizeValue ? variant.sizes.includes(sizeValue) : true;
 
-			return colorMatch && sizeMatch
-		})
-	})).filter(product => product.variants.length > 0)
+				return colorMatch && sizeMatch;
+			}),
+		}))
+		.filter((product) => product.variants.length > 0);
 
 	return (
 		<div className="bg-white">
@@ -32,6 +41,12 @@ export default function ProductList({ selectedColor, selectedSize }: { selectedC
 							<div
 								key={`${product.id}-${variantIndex}`}
 								className="group relative"
+								onClick={() =>
+									setSelectedProduct({
+										productId: product.id,
+										variantIndex: variantIndex,
+									})
+								}
 							>
 								<img
 									alt={variant.imageAlt}
@@ -47,7 +62,7 @@ export default function ProductList({ selectedColor, selectedSize }: { selectedC
 												{product.name}
 											</a>
 										</h3>
-                    <p className="mt-1 text-xs text-gray-500">
+										<p className="mt-1 text-xs text-gray-500">
 											{variant.color} • {variant.sizes.join(", ")}
 										</p>
 									</div>
@@ -68,7 +83,16 @@ export default function ProductList({ selectedColor, selectedSize }: { selectedC
 						)),
 					)}
 				</div>
-			</div>
+      </div>
+	  {selectedProduct && (
+  <ProductOverview
+	product={
+	  products.find(p => p.id === selectedProduct.productId)!
+	}
+	variantIndex={selectedProduct.variantIndex}
+	onClose={() => setSelectedProduct(null)}
+  />
+)}
 		</div>
 	);
 }
