@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { StarIcon } from "@heroicons/react/20/solid";
+import { useEffect, useRef, useState } from "react";
 import type { Product } from "@/lib/products";
 
 type ProductOverviewProps = {
@@ -26,6 +25,9 @@ export default function ProductOverview({
 	const [selectedSize, setSelectedSize] = useState(
 		product.variants[variantIndex]?.sizes[0] ?? "",
 	);
+	const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+	const touchStartX = useRef<number | null>(null);
+	const touchEndX = useRef<number | null>(null);
 
 	useEffect(() => {
 		setSelectedVariantIndex(variantIndex);
@@ -33,17 +35,86 @@ export default function ProductOverview({
 
 	const currentVariant =
 		product.variants[selectedVariantIndex] ?? product.variants[0];
+	const variantImages = [
+		{
+			src: currentVariant.imageSrc,
+			alt: currentVariant.imageAlt,
+		},
+		...(currentVariant.imageBackSrc
+			? [
+					{
+						src: currentVariant.imageBackSrc,
+						alt:
+							currentVariant.imageBackAlt ??
+							`${product.name} ${currentVariant.color} back view`,
+					},
+				]
+			: []),
+	];
 
 	useEffect(() => {
 		setSelectedSize(currentVariant?.sizes[0] ?? "");
 	}, [currentVariant?.id]);
 
+	useEffect(() => {
+		setSelectedImageIndex(0);
+	}, [currentVariant?.id]);
+
+	// image carousel handlers
+
+	const showPreviousImage = () => {
+		setSelectedImageIndex((prev) =>
+			prev === 0 ? variantImages.length - 1 : prev - 1,
+		);
+	};
+
+	const showNextImage = () => {
+		setSelectedImageIndex((prev) =>
+			prev === variantImages.length - 1 ? 0 : prev + 1,
+		);
+	};
+
+	const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+		touchStartX.current = event.touches[0]?.clientX ?? null;
+		touchEndX.current = null;
+	};
+
+	const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+		touchEndX.current = event.touches[0]?.clientX ?? null;
+	};
+
+	const handleTouchEnd = () => {
+		if (
+			touchStartX.current === null ||
+			touchEndX.current === null ||
+			variantImages.length < 2
+		) {
+			return;
+		}
+
+		const swipeDistance = touchStartX.current - touchEndX.current;
+		const minSwipeDistance = 40;
+
+		if (swipeDistance > minSwipeDistance) {
+			showNextImage();
+		}
+
+		if (swipeDistance < -minSwipeDistance) {
+			showPreviousImage();
+		}
+	};
+
 	if (!currentVariant) return null;
 
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center 
-		backdrop-blur-md">
-			<div className="bg-stone-100 max-h-screen w-full max-w-6xl overflow-y-auto rounded-xl m-4 shadow-lg">
+		<div
+			className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md "
+			onClick={onClose}
+		>
+			<div
+				className="bg-stone-100 max-h-screen w-full max-w-6xl overflow-hidden rounded-xl m-4 shadow-lg"
+				onClick={(event) => event.stopPropagation()}
+			>
 				<div className="pt-6">
 					<div className="mx-auto flex max-w-7xl justify-end px-4 sm:px-6 lg:px-8">
 						<button
@@ -71,11 +142,54 @@ export default function ProductOverview({
 
 					<div className="flex flex-col lg:flex-row items-center gap-8 p-8">
 						<div className="shrink-0 flex-1">
-							<img
-								alt={currentVariant.imageAlt}
-								src={currentVariant.imageSrc}
-								className="aspect-3/4 w-100 rounded-lg object-cover"
-							/>
+							<div
+								className="relative"
+								onTouchStart={handleTouchStart}
+								onTouchMove={handleTouchMove}
+								onTouchEnd={handleTouchEnd}
+							>
+								<img
+									alt={variantImages[selectedImageIndex].alt}
+									src={variantImages[selectedImageIndex].src}
+									className="aspect-3/4 w-full rounded-lg object-cover"
+								/>
+								{variantImages.length > 1 && (
+									<>
+										<button
+											type="button"
+											onClick={showPreviousImage}
+											className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 px-3 py-2 text-sm shadow hover:bg-white"
+											aria-label="Previous image"
+										>
+											‹
+										</button>
+										<button
+											type="button"
+											onClick={showNextImage}
+											className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 px-3 py-2 text-sm shadow hover:bg-white"
+											aria-label="Next image"
+										>
+											›
+										</button>
+										<div className="mt-3 flex justify-center gap-2">
+											{variantImages.map((image, idx) => (
+												<button
+													key={image.src}
+													type="button"
+													onClick={() => setSelectedImageIndex(idx)}
+													className={classNames(
+														"h-2.5 w-2.5 rounded-full",
+														idx === selectedImageIndex
+															? "bg-indigo-600"
+															: "bg-gray-300",
+													)}
+													aria-label={`Show image ${idx + 1}`}
+												/>
+											))}
+										</div>
+									</>
+								)}
+							</div>
 						</div>
 
 						<div className="flex-1">
@@ -84,7 +198,8 @@ export default function ProductOverview({
 									{product.name}
 								</h1>
 								<p className="mt-2 text-sm text-gray-500">
-									Color: <span className="font-medium">{currentVariant.color}</span>
+									Color:{" "}
+									<span className="font-medium">{currentVariant.color}</span>
 								</p>
 							</div>
 
