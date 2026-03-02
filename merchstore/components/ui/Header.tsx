@@ -6,13 +6,16 @@ import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Search, ShoppingCart } from "lucide-react";
+import Cart from "@/components/Cart";
 
 export default function Example() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const [open, setOpen] = useState(false);
 
 	return (
 		<div className="">
-			<header className="absolute inset-x-0 top-0 z-50">
+			<Cart open={open} setOpen={setOpen} />
+			<header className="absolute inset-x-0 top-0 z-20">
 				<nav
 					aria-label="Global"
 					className="flex items-center justify-between mx-32 lg:px-8 bg-white rounded-b-xl py-4"
@@ -47,8 +50,8 @@ export default function Example() {
 							<Search />
 						</a>
 						<a
-							href="#"
-							className="text-sm/6 font-semibold text-gray-900 border-2 rounded-full p-1 border-gray-300"
+							onClick={() => setOpen(true)}
+							className="text-sm/6 font-semibold text-gray-900 border-2 rounded-full p-1 border-gray-300 cursor-pointer"
 						>
 							<ShoppingCart />
 						</a>
