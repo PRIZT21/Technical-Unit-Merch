@@ -7,10 +7,21 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Search, ShoppingCart } from "lucide-react";
 import Cart from "@/components/Cart";
+import Badge, { BadgeProps } from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
 
-export default function Example() {
+export default function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [open, setOpen] = useState(false);
+
+	const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: 1,
+    top: 2,
+    border: `2px solid ${(theme.vars ?? theme).palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
 
 	return (
 		<div className="">
@@ -49,12 +60,14 @@ export default function Example() {
 						>
 							<Search />
 						</a>
-						<a
-							onClick={() => setOpen(true)}
-							className="text-sm/6 font-semibold text-gray-900 border-2 rounded-full p-1 border-gray-300 cursor-pointer"
-						>
-							<ShoppingCart />
-						</a>
+						<StyledBadge badgeContent={4} color="secondary">
+							<a
+								onClick={() => setOpen(true)}
+								className="text-sm/6 font-semibold text-gray-900 border-2 rounded-full p-1 border-gray-300 cursor-pointer"
+							>
+								<ShoppingCart />
+							</a>
+						</StyledBadge>
 					</div>
 				</nav>
 				<Dialog

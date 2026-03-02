@@ -46,6 +46,8 @@ const products = [
 	},
 ];
 
+
+
 export default function Cart({open, setOpen}: {open: boolean, setOpen: (value: boolean) => void}) {
 	return (
 		<div>
