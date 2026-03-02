@@ -11,16 +11,14 @@ export default function CategoriesSection() {
 	const [selectedSize, setSelectedSize] = useState<string | null>(null);
 	const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
 
-const filteredProducts = products.filter((product) => {
-	const productMatch =
-		!selectedProduct || product.name === selectedProduct;
+	const filteredProducts = products.filter((product) => {
+		const productMatch = !selectedProduct || product.name === selectedProduct;
 
-	const colorMatch =
-		!selectedColor || product.variants.some((v) => v.color === selectedColor);
+		const colorMatch =
+			!selectedColor || product.variants.some((v) => v.color === selectedColor);
 
-	return productMatch && colorMatch;
-});
-
+		return productMatch && colorMatch;
+	});
 
 	return (
 		<>
@@ -31,6 +29,8 @@ const filteredProducts = products.filter((product) => {
 						setSelectedColor={setSelectedColor}
 						setSelectedSize={setSelectedSize}
 						setSelectedProduct={setSelectedProduct}
+						selectedColor={selectedColor}
+						selectedProduct={selectedProduct}
 					/>
 				</div>
 				<div>

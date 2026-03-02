@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { products } from "@/lib/products";
 import ProductOverview from "@/components/ProductOverview";
 
-export default function ProductList({filteredProducts, selectedColor, selectedSize}: {
+export default function ProductList({
+	filteredProducts,
+	selectedColor,
+	selectedSize,
+}: {
 	filteredProducts: typeof products;
 	selectedColor: string | null;
 	selectedSize: string | null;
@@ -17,13 +21,34 @@ export default function ProductList({filteredProducts, selectedColor, selectedSi
 		productId: string;
 		variantIndex: number;
 	}>(null);
+	const [visibleProducts, setVisibleProducts] = useState(filteredProducts);
+	const [isTransitioning, setIsTransitioning] = useState(false);
 
+	const filterSignature = useMemo(
+		() => filteredProducts.map((product) => product.id).join("|"),
+		[filteredProducts],
+	);
+
+	useEffect(() => {
+		setIsTransitioning(true);
+
+		const timeoutId = window.setTimeout(() => {
+			setVisibleProducts(filteredProducts);
+			setIsTransitioning(false);
+		}, 180);
+
+		return () => window.clearTimeout(timeoutId);
+	}, [filterSignature, filteredProducts]);
 
 	return (
 		<div className="bg-white">
 			<div className="mx-auto px-4 sm:px-6 sm:pb-24  lg:px-8">
-				<div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-					{filteredProducts.map((product) =>
+				<div
+					className={`mt-6 grid grid-cols-1 gap-x-6 gap-y-10 transition-opacity duration-300 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8 ${
+						isTransitioning ? "opacity-0" : "opacity-100"
+					}`}
+				>
+					{visibleProducts.map((product) =>
 						product.variants.map((variant, variantIndex) => (
 							<div
 								key={`${product.id}-${variantIndex}`}
@@ -45,7 +70,7 @@ export default function ProductList({filteredProducts, selectedColor, selectedSi
 									<div>
 										<h3 className="text-2xl font-bold">
 											<a
-												// href={product.href}
+											// href={product.href}
 											>
 												<span aria-hidden="true" className="absolute inset-0" />
 												{product.name}
@@ -72,16 +97,14 @@ export default function ProductList({filteredProducts, selectedColor, selectedSi
 						)),
 					)}
 				</div>
-      </div>
-	  {selectedProduct && (
-  <ProductOverview
-	product={
-	  products.find(p => p.id === selectedProduct.productId)!
-	}
-	variantIndex={selectedProduct.variantIndex}
-	onClose={() => setSelectedProduct(null)}
-  />
-)}
+			</div>
+			{selectedProduct && (
+				<ProductOverview
+					product={products.find((p) => p.id === selectedProduct.productId)!}
+					variantIndex={selectedProduct.variantIndex}
+					onClose={() => setSelectedProduct(null)}
+				/>
+			)}
 		</div>
 	);
 }

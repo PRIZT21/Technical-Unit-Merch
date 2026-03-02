@@ -4,10 +4,14 @@ export default function Filter({
 	setSelectedColor,
 	setSelectedSize,
 	setSelectedProduct,
+	selectedColor,
+	selectedProduct,
 }: {
 	setSelectedColor: (value: string) => void;
 	setSelectedSize: (value: string) => void;
 	setSelectedProduct: (value: string) => void;
+	selectedColor: string | null;
+	selectedProduct: string | null;
 }) {
 	return (
 		<>
@@ -23,7 +27,12 @@ export default function Filter({
 									onClick={() =>
 										setSelectedProduct(product === "All" ? "" : product)
 									}
-									className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 transition text-sm cursor-pointer text-center"
+									className={`px-3 py-1 border rounded transition text-sm cursor-pointer text-center ${
+										(product === "All" && !selectedProduct) ||
+										selectedProduct === product
+											? "border-gray-900 bg-gray-900 text-white"
+											: "border-gray-300 hover:bg-gray-100"
+									}`}
 								>
 									{product}
 								</button>
@@ -45,8 +54,9 @@ export default function Filter({
 								key={color.value}
 								onClick={() => setSelectedColor(color.value)}
 								className={`w-8 h-8 rounded-full border-2 transition cursor-pointer ${
-									color.value === ""
-										? "border-gray-400"
+									selectedColor === color.value ||
+									(color.value === "" && !selectedColor)
+										? "border-gray-900 ring-2 ring-gray-900/20"
 										: "border-gray-400 hover:border-gray-600"
 								} ${color.bg}`}
 								title={color.name}
