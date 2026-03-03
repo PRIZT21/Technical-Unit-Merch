@@ -1,5 +1,5 @@
 export type ProductVariant = {
-	id: string;
+	variantId: string;
 	color: string;
 	imageSrc: string;
 	imageAlt: string;
@@ -9,7 +9,7 @@ export type ProductVariant = {
 };
 
 export type Product = {
-	id: string;
+	productId: string;
 	name: string;
 	price: string;
 	// href: string;
@@ -18,13 +18,35 @@ export type Product = {
 
 export const products: Product[] = [
 	{
-		id: "tshirt",
+		productId: "tshirt",
 		name: "T-Shirt",
 		price: "₦7,000",
 		// href: "#",
 		variants: [
 			{
-				id: "tshirt-black",
+				variantId: "tshirt-blue",
+				color: "Blue",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
+				imageAlt: "Classic T-Shirt in Blue",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-01.jpg",
+				imageBackAlt: "Classic T-Shirt back view in Blue",
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "tshirt-brown",
+				color: "Brown",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
+				imageAlt: "Classic T-Shirt in Brown",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-featured-product-shot.jpg",
+				imageBackAlt: "Classic T-Shirt back view in Brown",
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "tshirt-black",
 				color: "Black",
 				imageSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
@@ -35,45 +57,100 @@ export const products: Product[] = [
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 			{
-				id: "tshirt-navy",
-				color: "Navy",
+				variantId: "tshirt-white",
+				color: "White",
 				imageSrc:
-					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
-				imageAlt: "Classic T-Shirt in Navy",
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
+				imageAlt: "Classic T-Shirt in White",
 				imageBackSrc:
-					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-01.jpg",
-				imageBackAlt: "Classic T-Shirt back view in Navy",
-				sizes: ["S", "M", "L", "XL"],
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
+				imageBackAlt: "Classic T-Shirt back view in White",
+				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 		],
 	},
 	{
-		id: "sweatshirt",
+		productId: "sweatshirt",
 		name: "Sweatshirt",
 		price: "₦10,500",
 		// href: "#",
 		variants: [
 			{
-				id: "sweatshirt-black",
-				color: "Black",
+				variantId: "sweatshirt-blue",
+				color: "Blue",
 				imageSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
-				imageAlt: "Sweatshirt in Black",
+				imageAlt: "Sweatshirt in Blue",
 				imageBackSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-featured-product-shot.jpg",
+				imageBackAlt: "Sweatshirt back view in Blue",
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "sweatshirt-brown",
+				color: "Brown",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
+				imageAlt: "Sweatshirt in Brown",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
+				imageBackAlt: "Sweatshirt back view in Brown",
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "sweatshirt-black",
+				color: "Black",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
+				imageAlt: "Sweatshirt in Black",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-02.jpg",
 				imageBackAlt: "Sweatshirt back view in Black",
-				sizes: ["S", "M", "L", "XL"],
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "sweatshirt-white",
+				color: "White",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
+				imageAlt: "Sweatshirt in White",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-01.jpg",
+				imageBackAlt: "Sweatshirt back view in White",
+				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 		],
 	},
 	{
-		id: "varsity-jacket",
+		productId: "varsity-jacket",
 		name: "Varsity Jacket",
 		price: "₦12,500",
 		// href: "#",
 		variants: [
 			{
-				id: "varsity-jacket-black",
+				variantId: "varsity-jacket-blue",
+				color: "Blue",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
+				imageAlt: "Varsity Jacket in Blue",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-01.jpg",
+				imageBackAlt: "Varsity Jacket back view in Blue",
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "varsity-jacket-brown",
+				color: "Brown",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
+				imageAlt: "Varsity Jacket in Brown",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-featured-product-shot.jpg",
+				imageBackAlt: "Varsity Jacket back view in Brown",
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "varsity-jacket-black",
 				color: "Black",
 				imageSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
@@ -81,18 +158,51 @@ export const products: Product[] = [
 				imageBackSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
 				imageBackAlt: "Varsity Jacket back view in Black",
-				sizes: ["S", "M", "L", "XL"],
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "varsity-jacket-white",
+				color: "White",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
+				imageAlt: "Varsity Jacket in White",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-02.jpg",
+				imageBackAlt: "Varsity Jacket back view in White",
+				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 		],
 	},
 	{
-		id: "hoodie",
+		productId: "hoodie",
 		name: "Hoodie",
 		price: "₦13,500",
 		// href: "#",
 		variants: [
 			{
-				id: "hoodie-black",
+				variantId: "hoodie-blue",
+				color: "Blue",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
+				imageAlt: "Light Bearers Hoodie in Blue",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-01.jpg",
+				imageBackAlt: "Light Bearers Hoodie back view in Blue",
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "hoodie-brown",
+				color: "Brown",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
+				imageAlt: "Light Bearers Hoodie in Brown",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-02.jpg",
+				imageBackAlt: "Light Bearers Hoodie back view in Brown",
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "hoodie-black",
 				color: "Black",
 				imageSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
@@ -100,10 +210,10 @@ export const products: Product[] = [
 				imageBackSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-featured-product-shot.jpg",
 				imageBackAlt: "Light Bearers Hoodie back view in Black",
-				sizes: ["S", "M", "L", "XL"],
+				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 			{
-				id: "hoodie-white",
+				variantId: "hoodie-white",
 				color: "White",
 				imageSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
@@ -111,7 +221,7 @@ export const products: Product[] = [
 				imageBackSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
 				imageBackAlt: "Light Bearers Hoodie back view in White",
-				sizes: ["S", "M", "L", "XL"],
+				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 		],
 	},
