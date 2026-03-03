@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type CartItem = {
 	productId: string;
@@ -19,27 +20,35 @@ type Store = {
 	closeProduct: () => void;
 };
 
-export const useStore = create<Store>((set) => ({
-	cart: [],
-	addToCart: (item) =>
-		set((state) => ({
-			cart: [...state.cart, item],
-		})),
+export const useStore = create<Store>()(
+	persist(
+		(set) => ({
+			cart: [],
 
-	removeFromCart: (item) =>
-		set((state) => ({
-			cart: state.cart.filter(
-				(i) =>
-					i.productId !== item.productId ||
-					i.variantId !== item.variantId ||
-					i.size !== item.size,
-			),
-		})),
+			addToCart: (item) =>
+				set((state) => ({
+					cart: [...state.cart, item],
+				})),
 
-	clearCart: () => set({ cart: [] }),
+			removeFromCart: (item) =>
+				set((state) => ({
+					cart: state.cart.filter(
+						(i) =>
+							i.productId !== item.productId ||
+							i.variantId !== item.variantId ||
+							i.size !== item.size,
+					),
+				})),
 
-	selectedProductId: null,
+			clearCart: () => set({ cart: [] }),
 
-	openProduct: (id) => set({ selectedProductId: id }),
-  closeProduct: () => set({ selectedProductId: null }),
-}));
+			selectedProductId: null,
+
+			openProduct: (id) => set({ selectedProductId: id }),
+			closeProduct: () => set({ selectedProductId: null }),
+		}),
+		{
+			name: "tu-merch-cart", // localStorage key
+		},
+	),
+);

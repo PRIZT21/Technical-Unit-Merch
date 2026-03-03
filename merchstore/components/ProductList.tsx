@@ -15,7 +15,7 @@ export default function ProductList({
 	selectedColor: string | null;
 	selectedSize: string | null;
 }) {
-	// const [colorValue, setColorValue] = useState<string>(selectedColor);
+	const [colorValue, setColorValue] = useState<string | null>(selectedColor);
 	// const [sizeValue, setSizeValue] = useState<string>(selectedSize);
 	const [selectedProduct, setSelectedProduct] = useState<null | {
 		productId: string;
@@ -25,7 +25,7 @@ export default function ProductList({
 	const [isTransitioning, setIsTransitioning] = useState(false);
 
 	const filterSignature = useMemo(
-		() => filteredProducts.map((product) => product.id).join("|"),
+		() => filteredProducts.map((product) => product.productId).join("|"),
 		[filteredProducts],
 	);
 
@@ -51,11 +51,11 @@ export default function ProductList({
 					{visibleProducts.map((product) =>
 						product.variants.map((variant, variantIndex) => (
 							<div
-								key={`${product.id}-${variantIndex}`}
+								key={`${product.productId}-${variantIndex}`}
 								className="group relative"
 								onClick={() =>
 									setSelectedProduct({
-										productId: product.id,
+										productId: product.productId,
 										variantIndex: variantIndex,
 									})
 								}
@@ -100,7 +100,7 @@ export default function ProductList({
 			</div>
 			{selectedProduct && (
 				<ProductOverview
-					product={products.find((p) => p.id === selectedProduct.productId)!}
+					product={products.find((p) => p.productId === selectedProduct.productId)!}
 					variantIndex={selectedProduct.variantIndex}
 					onClose={() => setSelectedProduct(null)}
 				/>

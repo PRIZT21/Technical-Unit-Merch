@@ -34,7 +34,7 @@ export default function ProductOverview({
 	console.log(cart);
 	const handleAddToCart = () => {
 		addToCart({
-			productId: product.id,
+			productId: product.productId,
 			variantId: selectedVariantIndex.toString(),
 			size: selectedSize,
 			quantity: 1,
@@ -70,11 +70,11 @@ export default function ProductOverview({
 
 	useEffect(() => {
 		setSelectedSize(currentVariant?.sizes[0] ?? "");
-	}, [currentVariant?.id]);
+	}, [currentVariant?.variantId]);
 
 	useEffect(() => {
 		setSelectedImageIndex(0);
-	}, [currentVariant?.id]);
+	}, [currentVariant?.variantId]);
 
 	// image carousel handlers
 
@@ -133,13 +133,13 @@ export default function ProductOverview({
 			>
 				<div className="pt-6">
 					<div className="mx-auto flex max-w-7xl justify-end px-4 sm:px-6 lg:px-8">
-						<button
+						<Button
 							type="button"
 							onClick={onClose}
-							className="rounded-md border px-3 py-1 text-sm hover:bg-gray-50"
+							className="rounded-md border border-gray-300 px-3 py-1 text-sm bg-white text-gray-900 hover:bg-gray-100"
 						>
 							Close
-						</button>
+						</Button>
 					</div>
 
 					<nav aria-label="Breadcrumb">
@@ -174,7 +174,7 @@ export default function ProductOverview({
 										<button
 											type="button"
 											onClick={showPreviousImage}
-											className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 px-3 py-2 text-sm shadow hover:bg-white"
+											className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black px-3 py-2 text-sm shadow hover:bg-gray-800 text-white transition-colors"
 											aria-label="Previous image"
 										>
 											‹
@@ -182,7 +182,7 @@ export default function ProductOverview({
 										<button
 											type="button"
 											onClick={showNextImage}
-											className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 px-3 py-2 text-sm shadow hover:bg-white"
+											className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black px-3 py-2 text-sm shadow hover:bg-gray-800 text-white transition-colors"
 											aria-label="Next image"
 										>
 											›
@@ -196,7 +196,7 @@ export default function ProductOverview({
 													className={classNames(
 														"h-2.5 w-2.5 rounded-full",
 														idx === selectedImageIndex
-															? "bg-indigo-600"
+															? "bg-black"
 															: "bg-gray-300",
 													)}
 													aria-label={`Show image ${idx + 1}`}
@@ -228,19 +228,19 @@ export default function ProductOverview({
 									<h3 className="text-sm font-medium text-gray-900">Variant</h3>
 									<div className="mt-3 flex flex-wrap gap-2">
 										{product.variants.map((variant, idx) => (
-											<button
-												key={variant.id}
+											<Button
+												key={variant.variantId}
 												type="button"
 												onClick={() => setSelectedVariantIndex(idx)}
 												className={classNames(
 													"rounded-md border px-3 py-1 text-sm",
 													idx === selectedVariantIndex
-														? "border-indigo-600 bg-indigo-600 text-white"
+														? "border-black bg-black text-white"
 														: "border-gray-300 bg-white text-gray-900",
 												)}
 											>
 												{variant.color}
-											</button>
+											</Button>
 										))}
 									</div>
 								</div>
@@ -249,26 +249,26 @@ export default function ProductOverview({
 									<h3 className="text-sm font-medium text-gray-900">Size</h3>
 									<div className="mt-3 grid grid-cols-4 gap-2">
 										{currentVariant.sizes.map((size) => (
-											<button
+											<Button
 												key={size}
 												type="button"
 												onClick={() => setSelectedSize(size)}
 												className={classNames(
 													"rounded-md border px-3 py-2 text-sm uppercase",
 													selectedSize === size
-														? "border-indigo-600 bg-indigo-600 text-white"
+														? "border-black bg-black text-white"
 														: "border-gray-300 bg-white text-gray-900",
 												)}
 											>
 												{size}
-											</button>
+											</Button>
 										))}
 									</div>
 								</div>
 
 								<Button
 									type="button"
-									className="mt-10 flex w-full items-center justify-center rounded-md bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 cursor-pointer"
+									className="mt-10 flex w-full items-center justify-center rounded-md bg-black px-8 py-3 text-base font-medium text-white hover:bg-black/90 cursor-pointer transition-colors"
 									onClick={handleAddToCart}
 								>
 									Add to bag

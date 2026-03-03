@@ -47,8 +47,9 @@ export default function Filter({
 						{[
 							{ name: "All", value: "", bg: "bg-gray-200" },
 							{ name: "Black", value: "Black", bg: "bg-black" },
-							{ name: "Purple", value: "Purple", bg: "bg-purple-600" },
-							{ name: "Grey", value: "Grey", bg: "bg-gray-500" },
+							{ name: "Blue", value: "Blue", bg: "bg-blue-600" },
+							{ name: "Brown", value: "Brown", bg: "bg-amber-800" },
+							{ name: "White", value: "White", bg: "bg-white border border-gray-300" },
 						].map((color) => (
 							<button
 								key={color.value}
