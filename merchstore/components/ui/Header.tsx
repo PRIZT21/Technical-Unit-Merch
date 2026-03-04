@@ -7,22 +7,22 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Search, ShoppingCart } from "lucide-react";
 import Cart from "@/components/Cart";
-import Badge, { BadgeProps } from '@mui/material/Badge';
-import { styled } from '@mui/material/styles';
-import {useStore} from "@/lib/store/useStore"
+import Badge, { BadgeProps } from "@mui/material/Badge";
+import { styled } from "@mui/material/styles";
+import { useStore } from "@/lib/store/useStore";
 
 export default function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [open, setOpen] = useState(false);
 
 	const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
-  '& .MuiBadge-badge': {
-    right: 1,
-    top: 2,
-    border: `2px solid ${(theme.vars ?? theme).palette.background.paper}`,
-    padding: '0 4px',
-  },
-}));
+		"& .MuiBadge-badge": {
+			right: 1,
+			top: 2,
+			border: `2px solid ${(theme.vars ?? theme).palette.background.paper}`,
+			padding: "0 4px",
+		},
+	}));
 
 	const cart = useStore((state) => state.cart);
 
@@ -42,7 +42,8 @@ export default function Header() {
 
 							<Image
 								alt="Technical Unit Merch"
-								src="/images/technical_logo.png"
+								
+								src="/images/technical_logo.webp"
 								width={200}
 								height={200}
 							/>
@@ -87,7 +88,7 @@ export default function Header() {
 								<span className="sr-only">Technical Unit</span>
 								<img
 									alt="technical unit logo"
-									src="/images/technical_logo.png"
+									src="/images/technical_logo.webp"
 									className="h-8 w-auto"
 								/>
 							</a>
