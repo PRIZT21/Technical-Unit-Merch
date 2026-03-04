@@ -67,20 +67,12 @@ export default function Filter({
 				</div>
 
 				{/* Size Buttons */}
-				{/* <div>
+				<div>
         <label className="block text-sm font-medium mb-2">Size</label>
         <div className="flex gap-2">
-          {["All", "S", "M", "L", "XL"].map(size => (
-            <button
-              key={size}
-              onClick={() => setSelectedSize(size === "All" ? "" : size)}
-              className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 transition text-sm cursor-pointer"
-            >
-              {size}
-            </button>
-          ))}
+         <p className="text-sm text-gray-800"> Products are available in all sizes.</p>
         </div>
-      </div> */}
+      </div>
 			</div>
 		</>
 	);
