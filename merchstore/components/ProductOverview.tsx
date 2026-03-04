@@ -29,9 +29,6 @@ export default function ProductOverview({
 	);
 
 	const addToCart = useStore((state) => state.addToCart);
-
-	const cart = useStore((state) => state.cart);
-	console.log(cart);
 	const handleAddToCart = () => {
 		addToCart({
 			productId: product.productId,
@@ -235,7 +232,7 @@ export default function ProductOverview({
 												className={classNames(
 													"rounded-md border px-3 py-1 text-sm",
 													idx === selectedVariantIndex
-														? "border-black bg-black text-white"
+														? "border-black bg-black text-white hover-none"
 														: "border-gray-300 bg-white text-gray-900",
 												)}
 											>

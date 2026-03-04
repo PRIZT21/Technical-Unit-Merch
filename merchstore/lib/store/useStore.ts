@@ -52,3 +52,5 @@ export const useStore = create<Store>()(
 		},
 	),
 );
+
+console.log("Current cart:", useStore.getState().cart);
