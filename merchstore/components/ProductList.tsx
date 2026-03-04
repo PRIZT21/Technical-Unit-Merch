@@ -44,7 +44,7 @@ export default function ProductList({
 		<div className="bg-white cursor-pointer">
 			<div className="mx-auto px-4 sm:px-6 sm:pb-24  lg:px-8">
 				<div
-					className={`mt-6 grid grid-cols-1 gap-x-6 gap-y-10 transition-opacity duration-300 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8 ${
+					className={`mt-6 grid grid-cols-1 gap-x-6 gap-y-10 transition-opacity duration-300 sm:grid-cols-3 xl:gap-x-8 ${
 						isTransitioning ? "opacity-0" : "opacity-100"
 					}`}
 				>
@@ -77,11 +77,11 @@ export default function ProductList({
 											</a>
 										</h3>
 										<p className="mt-1 text-xs text-gray-500">
-											{variant.color} • {variant.sizes.join(", ")}
+											{variant.color}
 										</p>
 									</div>
 
-									<p className="text-lg font-semibold self-center">
+									<p className="text-lg font-semibold self-end">
 										{product.price}
 									</p>
 								</div>
