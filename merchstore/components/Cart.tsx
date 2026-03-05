@@ -8,46 +8,6 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useStore } from "@/lib/store/useStore";
 import { products } from "@/lib/products";
-import { useEffect } from "react";
-
-// const products = [
-// 	{
-// 		id: 1,
-// 		name: "Throwback Hip Bag",
-// 		href: "#",
-// 		color: "Salmon",
-// 		price: "$90.00",
-// 		quantity: 1,
-// 		imageSrc:
-// 			"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-// 		imageAlt:
-// 			"Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-// 	},
-// 	{
-// 		id: 2,
-// 		name: "Medium Stuff Satchel",
-// 		href: "#",
-// 		color: "Blue",
-// 		price: "$32.00",
-// 		quantity: 1,
-// 		imageSrc:
-// 			"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-// 		imageAlt:
-// 			"Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-// 	},
-// 	{
-// 		id: 3,
-// 		name: "Zip Tote Basket",
-// 		href: "#",
-// 		color: "White and black",
-// 		price: "$140.00",
-// 		quantity: 1,
-// 		imageSrc:
-// 			"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-03.jpg",
-// 		imageAlt:
-// 			"Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-// 	},
-// ];
 
 export default function Cart({
 	open,
@@ -56,14 +16,20 @@ export default function Cart({
 	open: boolean;
 	setOpen: (value: boolean) => void;
 }) {
-	const cart = useStore((state) => state.cart);
-
-	useEffect(() => {
-		console.log("Cart:", cart);
-	}, [cart]);
-
 	const items = useStore((state) => state.cart);
 	const removeFromCart = useStore((state) => state.removeFromCart);
+
+	const parsePrice = (price: string) => {
+		const numeric = Number(price.replace(/[^\d.]/g, ""));
+		return Number.isNaN(numeric) ? 0 : numeric;
+	};
+
+	const formatCurrency = (value: number) =>
+		new Intl.NumberFormat("en-NG", {
+			style: "currency",
+			currency: "NGN",
+			maximumFractionDigits: 0,
+		}).format(value);
 
 	const cartItems = items.map((item) => {
 		const product = products.find((p) => p.productId === item.productId);
@@ -87,6 +53,14 @@ export default function Cart({
 		};
 	});
 
+	const subtotal = cartItems.reduce(
+		(total, item) => total + parsePrice(item.price) * item.quantity,
+		0,
+	);
+	const totalUnits = cartItems.reduce((count, item) => count + item.quantity, 0);
+
+	const totalAmount = formatCurrency(subtotal);
+
 	return (
 		<div>
 			<Dialog
@@ -108,66 +82,89 @@ export default function Cart({
 							>
 								<div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
 									<div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-										<div className="flex items-start justify-between">
-											<DialogTitle className="text-lg font-medium text-gray-900">
-												Shopping cart
-											</DialogTitle>
-											<div className="ml-3 flex h-7 items-center">
+										<div className="-mx-4 -mt-6 mb-6 border-b border-gray-200 bg-linear-to-r from-gray-50 to-white px-4 py-5 sm:-mx-6 sm:px-6">
+											<div className="flex items-start justify-between gap-4">
+												<div>
+													<DialogTitle className="text-xl font-semibold tracking-tight text-gray-900">
+														Shopping cart
+													</DialogTitle>
+													<p className="mt-1 text-sm text-gray-600">
+														{totalUnits} {totalUnits === 1 ? "item" : "items"} in your bag
+													</p>
+												</div>
 												<button
 													type="button"
 													onClick={() => setOpen(false)}
-													className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+													className="inline-flex size-9 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 cursor-pointer"
 												>
-													<span className="absolute -inset-0.5" />
 													<span className="sr-only">Close panel</span>
-													<XMarkIcon aria-hidden="true" className="size-6" />
+													<XMarkIcon aria-hidden="true" className="size-5" />
 												</button>
 											</div>
 										</div>
 
 										<div className="mt-8">
-											<div className="flow-root">
-												<ul
-													role="list"
-													className="-my-6 divide-y divide-gray-200"
-												>
+											{cartItems.length === 0 ? (
+												<div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-10 text-center">
+													<p className="text-base font-medium text-gray-900">
+														Your cart is empty
+													</p>
+													<p className="mt-2 text-sm text-gray-500">
+														Add something from the store to see it here.
+													</p>
+												</div>
+											) : (
+												<ul role="list" className="space-y-4">
 													{cartItems.map((item, index) => {
 														const originalItem = items[index];
+
 														return (
 															<li
 																key={`${item.productId}-${item.variantId}-${item.size}`}
-																className="flex py-6"
+																className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm"
 															>
-																<div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-																	<img
-																		alt={item.imageAlt}
-																		src={item.image}
-																		className="size-full object-cover"
-																	/>
-																</div>
-
-																<div className="ml-4 flex flex-1 flex-col">
-																	<div>
-																		<div className="flex justify-between text-base font-medium text-gray-900">
-																			<h3>{item.name}</h3>
-																			<p className="ml-4">{item.price}</p>
-																		</div>
-																		<p className="mt-1 text-sm text-gray-500">
-																			{item.color}
-																		</p>
-																		<p className="mt-1 text-sm text-gray-500">
-																			{item.size}
-																		</p>
+																<div className="flex gap-4">
+																	<div className="size-24 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
+																		{item.image ? (
+																			<img
+																				alt={item.imageAlt}
+																				src={item.image}
+																				className="size-full object-cover"
+																			/>
+																		) : (
+																			<div className="flex size-full items-center justify-center px-2 text-center text-xs text-gray-500">
+																				No image
+																			</div>
+																		)}
 																	</div>
-																	<div className="flex flex-1 items-end justify-between text-sm">
-																		<p className="text-gray-500">
-																			Qty {item.quantity}
-																		</p>
 
-																		<div className="flex">
+																	<div className="flex min-w-0 flex-1 flex-col">
+																		<div className="flex items-start justify-between gap-3">
+																			<h3 className="truncate text-sm font-semibold text-gray-900 sm:text-base">
+																				{item.name}
+																			</h3>
+																			<p className="text-sm font-semibold text-gray-900 sm:text-base">
+																				{item.price}
+																			</p>
+																		</div>
+
+																		<div className="mt-2 flex flex-wrap gap-2 text-xs font-medium">
+																			<span className="rounded-full bg-gray-100 px-2.5 py-1 text-gray-700">
+																				Color: {item.color || "N/A"}
+																			</span>
+																			<span className="rounded-full bg-gray-100 px-2.5 py-1 text-gray-700">
+																				Size: {item.size || "N/A"}
+																			</span>
+																		</div>
+
+																		<div className="mt-auto flex items-center justify-between pt-3">
+																			<span className="rounded-full border border-gray-300 px-2.5 py-1 text-xs font-medium text-gray-600">
+																				Qty {item.quantity}
+																			</span>
+
 																			<button
 																				type="button"
-																				className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
+																				className="cursor-pointer rounded-md border border-red-200 px-2.5 py-1.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
 																				onClick={() =>
 																					removeFromCart(originalItem)
 																				}
@@ -181,37 +178,49 @@ export default function Cart({
 														);
 													})}
 												</ul>
-											</div>
+											)}
 										</div>
 									</div>
 
-									<div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-										<div className="flex justify-between text-base font-medium text-gray-900">
-											<p>Subtotal</p>
-											<p>$262.00</p>
-										</div>
-										<p className="mt-0.5 text-sm text-gray-500">
-											Shipping and taxes calculated at checkout.
-										</p>
-										<div className="mt-6">
-											<a
-												href="#"
-												className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700"
-											>
-												Checkout
-											</a>
-										</div>
-										<div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-											<p>
-												or{" "}
+									<div className="border-t border-gray-200 bg-gray-50 px-4 py-6 sm:px-6">
+										<div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+											<div className="flex items-center justify-between text-base font-semibold text-gray-900">
+												<p>Subtotal</p>
+												<p>{totalAmount}</p>
+											</div>
+											<div className="mt-2 flex items-center justify-between text-sm text-gray-600">
+												<p>Items</p>
+												<p>{totalUnits}</p>
+											</div>
+											<p className="mt-3 text-xs text-gray-500">
+												Shipping and taxes calculated at checkout.
+											</p>
+											<div className="mt-4">
 												<button
 													type="button"
+													disabled={cartItems.length === 0}
+													className={`flex w-full items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-xs transition-colors ${
+														cartItems.length === 0
+															? "cursor-not-allowed bg-gray-300"
+															: "cursor-pointer bg-black hover:bg-gray-800"
+													}`}
+												>
+													Checkout
+												</button>
+											</div>
+										</div>
+										<div className="mt-5 flex justify-center text-center text-sm text-gray-500">
+											<p>
+												or{" "}
+												<a
+													type="button"
+													href="#productsSection"
 													onClick={() => setOpen(false)}
-													className="font-medium text-indigo-600 hover:text-indigo-500"
+													className="font-medium text-black transition-colors hover:text-gray-700 cursor-pointer"
 												>
 													Continue Shopping
 													<span aria-hidden="true"> &rarr;</span>
-												</button>
+												</a>
 											</p>
 										</div>
 									</div>

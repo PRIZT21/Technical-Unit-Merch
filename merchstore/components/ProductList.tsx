@@ -41,7 +41,7 @@ export default function ProductList({
 	}, [filterSignature, filteredProducts]);
 
 	return (
-		<div className="bg-white cursor-pointer">
+		<div className="bg-white cursor-pointer" id="productsSection">
 			<div className="mx-auto px-4 sm:px-6 sm:pb-24  lg:px-8">
 				<div
 					className={`mt-6 grid grid-cols-1 gap-x-6 gap-y-10 transition-opacity duration-300 sm:grid-cols-3 xl:gap-x-8 ${
