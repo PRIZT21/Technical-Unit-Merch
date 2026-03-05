@@ -83,9 +83,13 @@ export default function ProductList({
 								<img
 									alt={variant.imageAlt}
 									src={variant.imageSrc}
-									className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
+									className="aspect-square w-full object-cover transition-opacity duration-800 group-hover:opacity-0 lg:aspect-auto lg:h-80"
+								/>{" "}
+								<img
+									alt={variant.imageBackAlt ?? `${product.name} back view`}
+									src={variant.imageBackSrc ?? variant.imageSrc}
+									className="absolute inset-0 aspect-square w-full object-cover opacity-0 transition-opacity duration-800 group-hover:opacity-100 lg:aspect-auto lg:h-80"
 								/>
-
 								<div className="mt-4 flex justify-between px-4">
 									<div>
 										<h3 className="text-2xl font-bold">
@@ -105,7 +109,6 @@ export default function ProductList({
 										{product.price}
 									</p>
 								</div>
-
 								<Button
 									className="w-full mt-8 rounded-sm"
 									content="leftIcon"
