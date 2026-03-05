@@ -8,6 +8,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useStore } from "@/lib/store/useStore";
 import { products } from "@/lib/products";
+import { toast } from "sonner";
 
 export default function Cart({
 	open,
@@ -63,6 +64,48 @@ export default function Cart({
 	);
 
 	const totalAmount = formatCurrency(subtotal);
+
+	type StoreCartItem = (typeof items)[number];
+
+	const handleRemoveFromCart = (
+		originalItem: StoreCartItem,
+		itemName: string,
+	) => {
+		toast.promise<{ name: string }>(
+			() =>
+				new Promise((resolve, reject) => {
+					try {
+						removeFromCart(originalItem);
+
+						setTimeout(() => resolve({ name: itemName }), 400);
+					} catch (error) {
+						reject(error);
+					}
+				}),
+			{
+				loading: "Removing from cart...",
+				success: (data) => `${data.name} has been removed from your bag`,
+				error: "Could not remove item",
+			},
+		);
+	};
+
+	const confirmRemoveFromCart = (
+		originalItem: StoreCartItem,
+		itemName: string,
+	) => {
+		toast(`Remove ${itemName}?`, {
+			description: "This item will be removed from your bag.",
+			action: {
+				label: "Yes",
+				onClick: () => handleRemoveFromCart(originalItem, itemName),
+			},
+			cancel: {
+				label: "No",
+				onClick: () => console.log("Cancel!"),
+			},
+		});
+	};
 
 	return (
 		<div>
@@ -168,10 +211,13 @@ export default function Cart({
 
 																			<button
 																				type="button"
-																				className="cursor-pointer rounded-md border border-red-200 px-2.5 py-1.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
 																				onClick={() =>
-																					removeFromCart(originalItem)
+																					confirmRemoveFromCart(
+																						originalItem,
+																						item.name,
+																					)
 																				}
+																				className="cursor-pointer rounded-md border border-red-200 px-2.5 py-1.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
 																			>
 																				Remove
 																			</button>

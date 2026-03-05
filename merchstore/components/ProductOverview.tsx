@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Product } from "@/lib/products";
 import { useStore } from "@/lib/store/useStore";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type ProductOverviewProps = {
 	product: Product;
@@ -28,18 +29,37 @@ export default function ProductOverview({
 		product.variants[variantIndex]?.sizes[0] ?? "",
 	);
 
+	// add to cart function
 	const addToCart = useStore((state) => state.addToCart);
-	const handleAddToCart = () => {
-		const selectedVariant =
-			product.variants[selectedVariantIndex] ?? product.variants[0];
 
-		addToCart({
-			productId: product.productId,
-			variantId: selectedVariant.variantId,
-			size: selectedSize,
-			quantity: 1,
-		});
-	};
+const handleAddToCart = () => {
+	const selectedVariant =
+		product.variants[selectedVariantIndex] ?? product.variants[0];
+
+	toast.promise<{ name: string }>(
+		() =>
+			new Promise((resolve, reject) => {
+				try {
+					addToCart({
+						productId: product.productId,
+						variantId: selectedVariant.variantId,
+						size: selectedSize,
+						quantity: 1,
+					});
+
+					// Optional delay so "Loading..." is visible
+					setTimeout(() => resolve({ name: product.name }), 400);
+				} catch (error) {
+					reject(error);
+				}
+			}),
+		{
+			loading: "Adding to cart...",
+			success: (data) => `${data.name} has been added to your bag`,
+			error: "Could not add to cart",
+		},
+	);
+};
 
 	const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 	const touchStartX = useRef<number | null>(null);
@@ -77,7 +97,6 @@ export default function ProductOverview({
 	}, [currentVariant?.variantId]);
 
 	// image carousel handlers
-
 	const showPreviousImage = () => {
 		setSelectedImageIndex((prev) =>
 			prev === 0 ? variantImages.length - 1 : prev - 1,
@@ -136,7 +155,7 @@ export default function ProductOverview({
 						<Button
 							type="button"
 							onClick={onClose}
-							className="rounded-md border border-gray-300 px-3 py-1 text-sm bg-white text-gray-900 hover:bg-gray-100"
+							className="rounded-md border border-gray-300 px-3 py-1 text-sm bg-white text-gray-900 hover:bg-gray-100 hover:text-black"
 						>
 							Close
 						</Button>
@@ -146,7 +165,6 @@ export default function ProductOverview({
 						<ol className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
 							<li className="text-sm">
 								<a
-									// href={product.href}
 									aria-current="page"
 									className="font-medium text-gray-500 hover:text-gray-600"
 								>
