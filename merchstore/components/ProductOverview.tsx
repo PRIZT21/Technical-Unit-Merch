@@ -28,38 +28,41 @@ export default function ProductOverview({
 	const [selectedSize, setSelectedSize] = useState(
 		product.variants[variantIndex]?.sizes[0] ?? "",
 	);
-
+	const [hasAddedToCart, setHasAddedToCart] = useState(false);
 	// add to cart function
 	const addToCart = useStore((state) => state.addToCart);
 
-const handleAddToCart = () => {
-	const selectedVariant =
-		product.variants[selectedVariantIndex] ?? product.variants[0];
+	const handleAddToCart = () => {
+		const selectedVariant =
+			product.variants[selectedVariantIndex] ?? product.variants[0];
 
-	toast.promise<{ name: string }>(
-		() =>
-			new Promise((resolve, reject) => {
-				try {
-					addToCart({
-						productId: product.productId,
-						variantId: selectedVariant.variantId,
-						size: selectedSize,
-						quantity: 1,
-					});
+		toast.promise<{ name: string }>(
+			() =>
+				new Promise((resolve, reject) => {
+					try {
+						addToCart({
+							productId: product.productId,
+							variantId: selectedVariant.variantId,
+							size: selectedSize,
+							quantity: 1,
+						});
 
-					// Optional delay so "Loading..." is visible
-					setTimeout(() => resolve({ name: product.name }), 400);
-				} catch (error) {
-					reject(error);
-				}
-			}),
-		{
-			loading: "Adding to cart...",
-			success: (data) => `${data.name} has been added to your bag`,
-			error: "Could not add to cart",
-		},
-	);
-};
+						// Optional delay so "Loading..." is visible
+						setTimeout(() => resolve({ name: product.name }), 400);
+					} catch (error) {
+						reject(error);
+					}
+				}),
+			{
+				loading: "Adding to cart...",
+				success: (data) => {
+					setHasAddedToCart(true);
+					return `${data.name} has been added to your bag`;
+				},
+				error: "Could not add to cart",
+			},
+		);
+	};
 
 	const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 	const touchStartX = useRef<number | null>(null);
@@ -241,7 +244,6 @@ const handleAddToCart = () => {
 								<p className="text-3xl tracking-tight text-gray-900">
 									{product.price}
 								</p>
-
 								<div className="mt-10">
 									<h3 className="text-sm font-medium text-gray-900">Variant</h3>
 									<div className="mt-3 flex flex-wrap gap-2">
@@ -262,7 +264,6 @@ const handleAddToCart = () => {
 										))}
 									</div>
 								</div>
-
 								<div className="mt-8">
 									<h3 className="text-sm font-medium text-gray-900">Size</h3>
 									<div className="mt-3 grid grid-cols-4 gap-2">
@@ -283,14 +284,24 @@ const handleAddToCart = () => {
 										))}
 									</div>
 								</div>
-
-								<Button
-									type="button"
-									className="mt-10 flex w-full items-center justify-center rounded-md bg-black px-8 py-3 text-base font-medium text-white hover:bg-black/90 cursor-pointer transition-colors"
-									onClick={handleAddToCart}
-								>
-									Add to bag
-								</Button>
+								{hasAddedToCart ? (
+									<a
+										href="#productsSection"
+										onClick={onClose}
+										className="mt-10 flex w-full items-center justify-center rounded-md bg-black px-8 py-3 text-base font-medium text-white transition-colors hover:bg-black/90"
+									>
+										Continue Shopping
+										<span aria-hidden="true"> &rarr;</span>
+									</a>
+								) : (
+									<Button
+										type="button"
+										className="mt-10 flex w-full items-center justify-center rounded-md bg-black px-8 py-3 text-base font-medium text-white transition-colors hover:bg-black/90"
+										onClick={handleAddToCart}
+									>
+										Add to bag
+									</Button>
+								)}
 							</div>
 						</div>
 					</div>
