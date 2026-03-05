@@ -20,6 +20,7 @@ export default function Cart({
 }) {
 	const items = useStore((state) => state.cart);
 	const removeFromCart = useStore((state) => state.removeFromCart);
+	const updateCartQuantity = useStore((state) => state.updateCartQuantity);
 
 	const parsePrice = (price: string) => {
 		const numeric = Number(price.replace(/[^\d.]/g, ""));
@@ -32,6 +33,9 @@ export default function Cart({
 			currency: "NGN",
 			maximumFractionDigits: 0,
 		}).format(value);
+
+	const getLineTotal = (price: string, quantity: number) =>
+		formatCurrency(parsePrice(price) * quantity);
 
 	const cartItems = items.map((item) => {
 		const product = products.find((p) => p.productId === item.productId);
@@ -108,6 +112,22 @@ export default function Cart({
 		});
 	};
 
+	const handleIncrementQuantity = (originalItem: StoreCartItem) => {
+		updateCartQuantity(originalItem, originalItem.quantity + 1);
+	};
+
+	const handleDecrementQuantity = (
+		originalItem: StoreCartItem,
+		itemName: string,
+	) => {
+		if (originalItem.quantity <= 1) {
+			confirmRemoveFromCart(originalItem, itemName);
+			return;
+		}
+
+		updateCartQuantity(originalItem, originalItem.quantity - 1);
+	};
+
 	return (
 		<div>
 			<Dialog
@@ -169,9 +189,9 @@ export default function Cart({
 														return (
 															<li
 																key={`${item.productId}-${item.variantId}-${item.size}`}
-																className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm"
+																className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
 															>
-																<div className="flex gap-4">
+																<div className="flex gap-3 sm:gap-4">
 																	<div className="size-24 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
 																		{item.image ? (
 																			<img
@@ -186,14 +206,22 @@ export default function Cart({
 																		)}
 																	</div>
 
-																	<div className="flex min-w-0 flex-1 flex-col">
+																	<div className="flex min-w-0 flex-1 flex-col justify-between">
 																		<div className="flex items-start justify-between gap-3">
 																			<h3 className="truncate text-sm font-semibold text-gray-900 sm:text-base">
 																				{item.name}
 																			</h3>
-																			<p className="text-sm font-semibold text-gray-900 sm:text-base">
-																				{item.price}
-																			</p>
+																			<div className="text-right tabular-nums">
+																				<p className="text-sm font-semibold text-gray-900 sm:text-base">
+																					{getLineTotal(
+																						item.price,
+																						item.quantity,
+																					)}
+																				</p>
+																				<p className="text-xs text-gray-500">
+																					Each {item.price}
+																				</p>
+																			</div>
 																		</div>
 
 																		<div className="mt-2 flex flex-wrap gap-2 text-xs font-medium">
@@ -205,10 +233,23 @@ export default function Cart({
 																			</span>
 																		</div>
 
-																		<div className="mt-auto flex items-center justify-between pt-3">
-																			<span className="px-2.5 py-1 text-xs font-medium text-gray-600">
-																				<QuantityCount quantity={item.quantity}/> 
-																			</span>
+																		<div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-3">
+																			<div className="rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600">
+																				<QuantityCount
+																					quantity={item.quantity}
+																					onIncrement={() =>
+																						handleIncrementQuantity(
+																							originalItem,
+																						)
+																					}
+																					onDecrement={() =>
+																						handleDecrementQuantity(
+																							originalItem,
+																							item.name,
+																						)
+																					}
+																				/>
+																			</div>
 
 																			<button
 																				type="button"

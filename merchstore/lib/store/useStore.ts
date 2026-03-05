@@ -13,6 +13,7 @@ type Store = {
 
 	addToCart: (item: CartItem) => void;
 	removeFromCart: (item: CartItem) => void;
+	updateCartQuantity: (item: CartItem, quantity: number) => void;
 	clearCart: () => void;
 
 	selectedProductId: string | null;
@@ -56,6 +57,16 @@ export const useStore = create<Store>()(
 					),
 				})),
 
+			updateCartQuantity: (targetItem, quantity) =>
+				set((state) => ({
+					cart: state.cart.map((item) =>
+						item.variantId === targetItem.variantId &&
+						item.size === targetItem.size
+							? { ...item, quantity: Math.max(1, quantity) }
+							: item,
+					),
+				})),
+
 			clearCart: () => set({ cart: [] }),
 
 			selectedProductId: null,
@@ -64,10 +75,10 @@ export const useStore = create<Store>()(
 			closeProduct: () => set({ selectedProductId: null }),
 		}),
 		{
-		name: "tu-merch-cart",
-		partialize: (state) => ({
-			cart: state.cart,
-		}),
-	}
+			name: "tu-merch-cart",
+			partialize: (state) => ({
+				cart: state.cart,
+			}),
+		},
 	),
 );

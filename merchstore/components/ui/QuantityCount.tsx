@@ -1,26 +1,31 @@
-import { useState } from 'react';
+type QuantityCountProps = {
+	quantity: number;
+	onIncrement: () => void;
+	onDecrement: () => void;
+};
 
-export default function QuantityCount({ quantity }: { quantity: number }) {
-  const [currentQuantity, setCurrentQuantity] = useState(quantity);
-
-  const increment = () => setCurrentQuantity(currentQuantity + 1);
-  const decrement = () => setCurrentQuantity(currentQuantity > 1 ? currentQuantity - 1 : 1);
-
-  return (
-    <div className="flex items-center gap-2">
-      <button
-        onClick={decrement}
-        className="px-3 py-1 bg-black rounded hover:bg-gray-900 text-white"
-      >
-        −
-      </button>
-      <span className="w-8 text-center">{currentQuantity}</span>
-      <button
-        onClick={increment}
-        className="px-3 py-1 bg-black rounded hover:bg-gray-900 text-white"
-      >
-        +
-      </button>
-    </div>
-  );
+export default function QuantityCount({
+	quantity,
+	onIncrement,
+	onDecrement,
+}: QuantityCountProps) {
+	return (
+		<div className="flex items-center gap-2">
+			<button
+				type="button"
+				onClick={onDecrement}
+				className="rounded bg-black px-3 py-1 text-white hover:bg-gray-900"
+			>
+				-
+			</button>
+			<span className="w-8 text-center">{quantity}</span>
+			<button
+				type="button"
+				onClick={onIncrement}
+				className="rounded bg-black px-3 py-1 text-white hover:bg-gray-900"
+			>
+				+
+			</button>
+		</div>
+	);
 }
