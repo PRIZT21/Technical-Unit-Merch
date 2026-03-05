@@ -6,47 +6,48 @@ import {
 	DialogTitle,
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useStore } from "../lib/store/useStore";
+import { useStore } from "@/lib/store/useStore";
+import { products } from "@/lib/products";
 import { useEffect } from "react";
 
-const products = [
-	{
-		id: 1,
-		name: "Throwback Hip Bag",
-		href: "#",
-		color: "Salmon",
-		price: "$90.00",
-		quantity: 1,
-		imageSrc:
-			"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-		imageAlt:
-			"Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-	},
-	{
-		id: 2,
-		name: "Medium Stuff Satchel",
-		href: "#",
-		color: "Blue",
-		price: "$32.00",
-		quantity: 1,
-		imageSrc:
-			"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-		imageAlt:
-			"Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-	},
-	{
-		id: 3,
-		name: "Zip Tote Basket",
-		href: "#",
-		color: "White and black",
-		price: "$140.00",
-		quantity: 1,
-		imageSrc:
-			"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-03.jpg",
-		imageAlt:
-			"Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-	},
-];
+// const products = [
+// 	{
+// 		id: 1,
+// 		name: "Throwback Hip Bag",
+// 		href: "#",
+// 		color: "Salmon",
+// 		price: "$90.00",
+// 		quantity: 1,
+// 		imageSrc:
+// 			"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+// 		imageAlt:
+// 			"Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+// 	},
+// 	{
+// 		id: 2,
+// 		name: "Medium Stuff Satchel",
+// 		href: "#",
+// 		color: "Blue",
+// 		price: "$32.00",
+// 		quantity: 1,
+// 		imageSrc:
+// 			"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+// 		imageAlt:
+// 			"Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+// 	},
+// 	{
+// 		id: 3,
+// 		name: "Zip Tote Basket",
+// 		href: "#",
+// 		color: "White and black",
+// 		price: "$140.00",
+// 		quantity: 1,
+// 		imageSrc:
+// 			"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-03.jpg",
+// 		imageAlt:
+// 			"Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
+// 	},
+// ];
 
 export default function Cart({
 	open,
@@ -60,6 +61,31 @@ export default function Cart({
 	useEffect(() => {
 		console.log("Cart:", cart);
 	}, [cart]);
+
+	const items = useStore((state) => state.cart);
+	const removeFromCart = useStore((state) => state.removeFromCart);
+
+	const cartItems = items.map((item) => {
+		const product = products.find((p) => p.productId === item.productId);
+		const variantById = product?.variants.find(
+			(v) => v.variantId === item.variantId,
+		);
+		const parsedVariantIndex = Number(item.variantId);
+		const variantByIndex = Number.isInteger(parsedVariantIndex)
+			? product?.variants[parsedVariantIndex]
+			: undefined;
+		const variant = variantById ?? variantByIndex;
+
+		return {
+			...item,
+			name: product?.name ?? "Unknown product",
+			price: product?.price ?? "",
+			image: variant?.imageSrc ?? "",
+			imageAlt: variant?.imageAlt ?? product?.name ?? "Cart item",
+			size: item.size,
+			color: variant?.color ?? "",
+		};
+	});
 
 	return (
 		<div>
@@ -105,45 +131,55 @@ export default function Cart({
 													role="list"
 													className="-my-6 divide-y divide-gray-200"
 												>
-													{products.map((product) => (
-														<li key={product.id} className="flex py-6">
-															<div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-																<img
-																	alt={product.imageAlt}
-																	src={product.imageSrc}
-																	className="size-full object-cover"
-																/>
-															</div>
-
-															<div className="ml-4 flex flex-1 flex-col">
-																<div>
-																	<div className="flex justify-between text-base font-medium text-gray-900">
-																		<h3>
-																			<a href={product.href}>{product.name}</a>
-																		</h3>
-																		<p className="ml-4">{product.price}</p>
-																	</div>
-																	<p className="mt-1 text-sm text-gray-500">
-																		{product.color}
-																	</p>
+													{cartItems.map((item, index) => {
+														const originalItem = items[index];
+														return (
+															<li
+																key={`${item.productId}-${item.variantId}-${item.size}`}
+																className="flex py-6"
+															>
+																<div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
+																	<img
+																		alt={item.imageAlt}
+																		src={item.image}
+																		className="size-full object-cover"
+																	/>
 																</div>
-																<div className="flex flex-1 items-end justify-between text-sm">
-																	<p className="text-gray-500">
-																		Qty {product.quantity}
-																	</p>
 
-																	<div className="flex">
-																		<button
-																			type="button"
-																			className="font-medium text-indigo-600 hover:text-indigo-500"
-																		>
-																			Remove
-																		</button>
+																<div className="ml-4 flex flex-1 flex-col">
+																	<div>
+																		<div className="flex justify-between text-base font-medium text-gray-900">
+																			<h3>{item.name}</h3>
+																			<p className="ml-4">{item.price}</p>
+																		</div>
+																		<p className="mt-1 text-sm text-gray-500">
+																			{item.color}
+																		</p>
+																		<p className="mt-1 text-sm text-gray-500">
+																			{item.size}
+																		</p>
+																	</div>
+																	<div className="flex flex-1 items-end justify-between text-sm">
+																		<p className="text-gray-500">
+																			Qty {item.quantity}
+																		</p>
+
+																		<div className="flex">
+																			<button
+																				type="button"
+																				className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
+																				onClick={() =>
+																					removeFromCart(originalItem)
+																				}
+																			>
+																				Remove
+																			</button>
+																		</div>
 																	</div>
 																</div>
-															</div>
-														</li>
-													))}
+															</li>
+														);
+													})}
 												</ul>
 											</div>
 										</div>

@@ -30,9 +30,12 @@ export default function ProductOverview({
 
 	const addToCart = useStore((state) => state.addToCart);
 	const handleAddToCart = () => {
+		const selectedVariant =
+			product.variants[selectedVariantIndex] ?? product.variants[0];
+
 		addToCart({
 			productId: product.productId,
-			variantId: selectedVariantIndex.toString(),
+			variantId: selectedVariant.variantId,
 			size: selectedSize,
 			quantity: 1,
 		});
