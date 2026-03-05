@@ -45,11 +45,19 @@ export default function Filter({
 					<label className="block text-sm font-medium mb-2">Color</label>
 					<div className="flex gap-2">
 						{[
-							{ name: "All", value: "", bg: "bg-gradient-to-br from-white via-blue-600 to-amber-800" },
+							{
+								name: "All",
+								value: "",
+								bg: "bg-gradient-to-br from-white via-blue-600 to-amber-800",
+							},
 							{ name: "Black", value: "Black", bg: "bg-black" },
 							{ name: "Blue", value: "Blue", bg: "bg-blue-600" },
 							{ name: "Brown", value: "Brown", bg: "bg-amber-800" },
-							{ name: "White", value: "White", bg: "bg-white border border-gray-300" },
+							{
+								name: "White",
+								value: "White",
+								bg: "bg-white border border-gray-300",
+							},
 						].map((color) => (
 							<button
 								key={color.value}
@@ -61,19 +69,29 @@ export default function Filter({
 										: "border-gray-400 hover:border-gray-600"
 								} ${color.bg}`}
 								title={color.name}
-								style={color.value === "" ? { backgroundImage: "radial-gradient(circle, white, black)" } : undefined}
+								style={
+									color.value === ""
+										? {
+												backgroundImage:
+													"radial-gradient(circle, white, black)",
+											}
+										: undefined
+								}
 							/>
 						))}
 					</div>
-				</div>
+				</div>	
 
 				{/* Size Buttons */}
 				<div>
-        <label className="block text-sm font-medium mb-2">Size</label>
-        <div className="flex gap-2">
-         <p className="text-sm text-gray-800"> Products are available in all sizes.</p>
-        </div>
-      </div>
+					<label className="block text-sm font-medium mb-2">Size</label>
+					<div className="flex gap-2">
+						<p className="text-sm text-gray-800">
+							{" "}
+							Products are available in all sizes.
+						</p>
+					</div>
+				</div>
 			</div>
 		</>
 	);
