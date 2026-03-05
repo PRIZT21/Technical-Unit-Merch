@@ -43,15 +43,17 @@ export default function Filter({
 				{/* Color Swatches */}
 				<div>
 					<label className="block text-sm font-medium mb-2">Color</label>
-					<div className="flex gap-2">
+					<div className="flex flex-wrap gap-2">
 						{[
 							{
 								name: "All",
 								value: "",
 								bg: "bg-gradient-to-br from-white via-blue-600 to-amber-800",
 							},
+							{ name: "Navy Blue", value: "Navy Blue", bg: "bg-blue-900" },
 							{ name: "Black", value: "Black", bg: "bg-black" },
 							{ name: "Blue", value: "Blue", bg: "bg-blue-600" },
+							{ name: "Grey", value: "Grey", bg: "bg-gray-500" },
 							{ name: "Brown", value: "Brown", bg: "bg-amber-800" },
 							{
 								name: "White",
@@ -80,7 +82,7 @@ export default function Filter({
 							/>
 						))}
 					</div>
-				</div>	
+				</div>
 
 				{/* Size Buttons */}
 				<div>

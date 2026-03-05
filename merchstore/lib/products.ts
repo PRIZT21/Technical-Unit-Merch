@@ -24,25 +24,25 @@ export const products: Product[] = [
 		// href: "#",
 		variants: [
 			{
-				variantId: "tshirt-blue",
-				color: "Blue",
+				variantId: "tshirt-navy-blue",
+				color: "Navy Blue",
 				imageSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
-				imageAlt: "Classic T-Shirt in Blue",
+				imageAlt: "Classic T-Shirt in Navy Blue",
 				imageBackSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-01.jpg",
-				imageBackAlt: "Classic T-Shirt back view in Blue",
+				imageBackAlt: "Classic T-Shirt back view in Navy Blue",
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 			{
-				variantId: "tshirt-brown",
-				color: "Brown",
+				variantId: "tshirt-grey",
+				color: "Grey",
 				imageSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
-				imageAlt: "Classic T-Shirt in Brown",
+				imageAlt: "Classic T-Shirt in Grey",
 				imageBackSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-featured-product-shot.jpg",
-				imageBackAlt: "Classic T-Shirt back view in Brown",
+				imageBackAlt: "Classic T-Shirt back view in Grey",
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 			{
@@ -76,14 +76,25 @@ export const products: Product[] = [
 		// href: "#",
 		variants: [
 			{
-				variantId: "sweatshirt-blue",
-				color: "Blue",
+				variantId: "sweatshirt-navy-blue",
+				color: "Navy Blue",
 				imageSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
-				imageAlt: "Sweatshirt in Blue",
+				imageAlt: "Sweatshirt in Navy Blue",
 				imageBackSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-featured-product-shot.jpg",
-				imageBackAlt: "Sweatshirt back view in Blue",
+				imageBackAlt: "Sweatshirt back view in Navy Blue",
+				sizes: ["S", "M", "L", "XL", "XXL"],
+			},
+			{
+				variantId: "sweatshirt-grey",
+				color: "Grey",
+				imageSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
+				imageAlt: "Sweatshirt in Grey",
+				imageBackSrc:
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-01.jpg",
+				imageBackAlt: "Sweatshirt back view in Grey",
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 			{
@@ -108,17 +119,6 @@ export const products: Product[] = [
 				imageBackAlt: "Sweatshirt back view in Black",
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
-			{
-				variantId: "sweatshirt-white",
-				color: "White",
-				imageSrc:
-					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
-				imageAlt: "Sweatshirt in White",
-				imageBackSrc:
-					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-01.jpg",
-				imageBackAlt: "Sweatshirt back view in White",
-				sizes: ["S", "M", "L", "XL", "XXL"],
-			},
 		],
 	},
 	{
@@ -128,25 +128,14 @@ export const products: Product[] = [
 		// href: "#",
 		variants: [
 			{
-				variantId: "varsity-jacket-blue",
-				color: "Blue",
+				variantId: "varsity-jacket-navy-blue",
+				color: "Navy Blue",
 				imageSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
-				imageAlt: "Varsity Jacket in Blue",
+				imageAlt: "Varsity Jacket in Navy Blue",
 				imageBackSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-01.jpg",
-				imageBackAlt: "Varsity Jacket back view in Blue",
-				sizes: ["S", "M", "L", "XL", "XXL"],
-			},
-			{
-				variantId: "varsity-jacket-brown",
-				color: "Brown",
-				imageSrc:
-					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
-				imageAlt: "Varsity Jacket in Brown",
-				imageBackSrc:
-					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-featured-product-shot.jpg",
-				imageBackAlt: "Varsity Jacket back view in Brown",
+				imageBackAlt: "Varsity Jacket back view in Navy Blue",
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 			{
@@ -161,14 +150,14 @@ export const products: Product[] = [
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 			{
-				variantId: "varsity-jacket-white",
-				color: "White",
+				variantId: "varsity-jacket-grey",
+				color: "Grey",
 				imageSrc:
-					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
-				imageAlt: "Varsity Jacket in White",
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
+				imageAlt: "Varsity Jacket in Grey",
 				imageBackSrc:
-					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-02.jpg",
-				imageBackAlt: "Varsity Jacket back view in White",
+					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-featured-product-shot.jpg",
+				imageBackAlt: "Varsity Jacket back view in Grey",
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 		],
@@ -191,14 +180,14 @@ export const products: Product[] = [
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 			{
-				variantId: "hoodie-brown",
-				color: "Brown",
+				variantId: "hoodie-grey",
+				color: "Grey",
 				imageSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
-				imageAlt: "Light Bearers Hoodie in Brown",
+				imageAlt: "Light Bearers Hoodie in Grey",
 				imageBackSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-product-02.jpg",
-				imageBackAlt: "Light Bearers Hoodie back view in Brown",
+				imageBackAlt: "Light Bearers Hoodie back view in Grey",
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 			{
@@ -210,17 +199,6 @@ export const products: Product[] = [
 				imageBackSrc:
 					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-featured-product-shot.jpg",
 				imageBackAlt: "Light Bearers Hoodie back view in Black",
-				sizes: ["S", "M", "L", "XL", "XXL"],
-			},
-			{
-				variantId: "hoodie-white",
-				color: "White",
-				imageSrc:
-					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
-				imageAlt: "Light Bearers Hoodie in White",
-				imageBackSrc:
-					"https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-				imageBackAlt: "Light Bearers Hoodie back view in White",
 				sizes: ["S", "M", "L", "XL", "XXL"],
 			},
 		],
