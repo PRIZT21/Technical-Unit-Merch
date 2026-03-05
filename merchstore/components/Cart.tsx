@@ -9,6 +9,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useStore } from "@/lib/store/useStore";
 import { products } from "@/lib/products";
 import { toast } from "sonner";
+import QuantityCount from "@/components/ui/QuantityCount";
 
 export default function Cart({
 	open,
@@ -205,8 +206,8 @@ export default function Cart({
 																		</div>
 
 																		<div className="mt-auto flex items-center justify-between pt-3">
-																			<span className="rounded-full border border-gray-300 px-2.5 py-1 text-xs font-medium text-gray-600">
-																				Qty {item.quantity}
+																			<span className="px-2.5 py-1 text-xs font-medium text-gray-600">
+																				<QuantityCount quantity={item.quantity}/> 
 																			</span>
 
 																			<button
