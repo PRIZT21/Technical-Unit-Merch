@@ -22,21 +22,37 @@ type Store = {
 
 export const useStore = create<Store>()(
 	persist(
-		(set) => ({
+		(set, get) => ({
 			cart: [],
+			// add to cart if the product does not exist and if it does exist, increase the quantity
+			addToCart: (newItem) =>
+				set((state) => {
+					const existing = state.cart.find(
+						(item) =>
+							item.variantId === newItem.variantId &&
+							item.size === newItem.size,
+					);
 
-			addToCart: (item) =>
-				set((state) => ({
-					cart: [...state.cart, item],
-				})),
+					if (existing) {
+						return {
+							cart: state.cart.map((item) =>
+								item.variantId === newItem.variantId &&
+								item.size === newItem.size
+									? { ...item, quantity: item.quantity + newItem.quantity }
+									: item,
+							),
+						};
+					}
+
+					return {
+						cart: [...state.cart, newItem],
+					};
+				}),
 
 			removeFromCart: (item) =>
 				set((state) => ({
 					cart: state.cart.filter(
-						(i) =>
-							i.productId !== item.productId ||
-							i.variantId !== item.variantId ||
-							i.size !== item.size,
+						(i) => !(i.variantId === item.variantId && i.size === item.size),
 					),
 				})),
 
@@ -48,9 +64,10 @@ export const useStore = create<Store>()(
 			closeProduct: () => set({ selectedProductId: null }),
 		}),
 		{
-			name: "tu-merch-cart", // localStorage key
-		},
+		name: "tu-merch-cart",
+		partialize: (state) => ({
+			cart: state.cart,
+		}),
+	}
 	),
 );
-
-console.log("Current cart:", useStore.getState().cart);

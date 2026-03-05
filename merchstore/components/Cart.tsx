@@ -6,6 +6,8 @@ import {
 	DialogTitle,
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useStore } from "../lib/store/useStore";
+import { useEffect } from "react";
 
 const products = [
 	{
@@ -13,7 +15,7 @@ const products = [
 		name: "Throwback Hip Bag",
 		href: "#",
 		color: "Salmon",
-		price: "$90.00", 
+		price: "$90.00",
 		quantity: 1,
 		imageSrc:
 			"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
@@ -46,12 +48,26 @@ const products = [
 	},
 ];
 
+export default function Cart({
+	open,
+	setOpen,
+}: {
+	open: boolean;
+	setOpen: (value: boolean) => void;
+}) {
+	const cart = useStore((state) => state.cart);
 
+	useEffect(() => {
+		console.log("Cart:", cart);
+	}, [cart]);
 
-export default function Cart({open, setOpen}: {open: boolean, setOpen: (value: boolean) => void}) {
 	return (
 		<div>
-			<Dialog open={open} onClose={setOpen} className="relative z-50 rounded-md">
+			<Dialog
+				open={open}
+				onClose={setOpen}
+				className="relative z-50 rounded-md"
+			>
 				<DialogBackdrop
 					transition
 					className="fixed inset-0 bg-gray-500/75 transition-opacity duration-500 ease-in-out data-closed:opacity-0"
