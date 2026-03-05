@@ -57,7 +57,10 @@ export default function Cart({
 		(total, item) => total + parsePrice(item.price) * item.quantity,
 		0,
 	);
-	const totalUnits = cartItems.reduce((count, item) => count + item.quantity, 0);
+	const totalUnits = cartItems.reduce(
+		(count, item) => count + item.quantity,
+		0,
+	);
 
 	const totalAmount = formatCurrency(subtotal);
 
@@ -89,7 +92,8 @@ export default function Cart({
 														Shopping cart
 													</DialogTitle>
 													<p className="mt-1 text-sm text-gray-600">
-														{totalUnits} {totalUnits === 1 ? "item" : "items"} in your bag
+														{totalUnits} {totalUnits === 1 ? "item" : "items"}{" "}
+														in your bag
 													</p>
 												</div>
 												<button
