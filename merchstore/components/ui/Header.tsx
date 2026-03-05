@@ -60,12 +60,12 @@ export default function Header() {
 						</button>
 					</div>
 					<div className="hidden lg:flex lg:flex-1 lg:justify-end gap-8">
-						<a
+						{/* <a
 							href="#"
 							className="text-sm/6 font-semibold text-gray-900 border-2 border-gray-300 rounded-full p-1"
 						>
-							<Search />
-						</a>
+							<Search /> 
+						</a>*/}
 						<StyledBadge badgeContent={totalItems} color="secondary">
 							<a
 								onClick={() => setOpen(true)}
