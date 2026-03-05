@@ -45,7 +45,7 @@ export default function Filter({
 					<label className="block text-sm font-medium mb-2">Color</label>
 					<div className="flex gap-2">
 						{[
-							{ name: "All", value: "", bg: "bg-gray-200" },
+							{ name: "All", value: "", bg: "bg-gradient-to-br from-white via-blue-600 to-amber-800" },
 							{ name: "Black", value: "Black", bg: "bg-black" },
 							{ name: "Blue", value: "Blue", bg: "bg-blue-600" },
 							{ name: "Brown", value: "Brown", bg: "bg-amber-800" },
@@ -57,10 +57,11 @@ export default function Filter({
 								className={`w-8 h-8 rounded-full border-2 transition cursor-pointer ${
 									selectedColor === color.value ||
 									(color.value === "" && !selectedColor)
-										? "border-gray-900 ring-2 ring-gray-900/20"
+										? "border-gray-900"
 										: "border-gray-400 hover:border-gray-600"
 								} ${color.bg}`}
 								title={color.name}
+								style={color.value === "" ? { backgroundImage: "radial-gradient(circle, white, black)" } : undefined}
 							/>
 						))}
 					</div>
