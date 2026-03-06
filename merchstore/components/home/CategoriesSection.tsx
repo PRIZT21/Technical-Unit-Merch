@@ -22,18 +22,16 @@ export default function CategoriesSection() {
 	return (
 		<motion.section
 			id="productsSection"
-			className="mx-auto mt-12 w-full max-w-360 px-4 pb-16 sm:mt-16 sm:px-6 lg:px-8"
+			className="relative z-10 mx-auto mt-8 w-full max-w-360 px-4 pb-16 sm:mt-12 sm:px-6 lg:px-8"
 			initial={{ opacity: 0, y: 24 }}
-			whileInView={{ opacity: 1, y: 0 }}
-			viewport={{ once: true, amount: 0.2 }}
+			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.45, ease: "easeOut" }}
 		>
 			<div className="grid items-start gap-8 lg:grid-cols-[minmax(auto,280px)_1fr] xl:gap-12">
 				<motion.aside
 					className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6 lg:sticky lg:top-24"
 					initial={{ opacity: 0, x: -18 }}
-					whileInView={{ opacity: 1, x: 0 }}
-					viewport={{ once: true, amount: 0.3 }}
+					animate={{ opacity: 1, x: 0 }}
 					transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
 				>
 					<h3 className="text-2xl font-bold sm:text-3xl">Category</h3>
@@ -52,8 +50,7 @@ export default function CategoriesSection() {
 				<motion.div
 					className="min-w-0"
 					initial={{ opacity: 0, y: 18 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true, amount: 0.2 }}
+					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.45, ease: "easeOut", delay: 0.15 }}
 				>
 					<ProductList
