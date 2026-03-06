@@ -147,7 +147,7 @@ export default function ProductOverview({
 
 	return (
 		<motion.div
-			className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/30 p-2 pt-6 backdrop-blur-sm sm:items-center sm:p-4"
+			className="fixed inset-0 z-60 flex items-start justify-center overflow-y-auto bg-black/30 p-2 pt-6 backdrop-blur-sm sm:items-center sm:p-4"
 			onClick={onClose}
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
@@ -194,13 +194,13 @@ export default function ProductOverview({
 								onTouchMove={handleTouchMove}
 								onTouchEnd={handleTouchEnd}
 							>
-								<div className="relative overflow-hidden rounded-lg bg-white">
+								<div className="relative overflow-hidden rounded-lg bg-white aspect-10/9">
 									<AnimatePresence mode="wait" initial={false}>
 										<motion.img
 											key={`${currentVariant.variantId}-${selectedImageIndex}`}
 											alt={variantImages[selectedImageIndex].alt}
 											src={variantImages[selectedImageIndex].src}
-											className="aspect-3/4 w-full object-cover"
+											className="h-auto w-full object-cover"
 											initial={{ opacity: 0.4, scale: 1.02 }}
 											animate={{ opacity: 1, scale: 1 }}
 											exit={{ opacity: 0.4, scale: 0.98 }}
@@ -300,7 +300,7 @@ export default function ProductOverview({
 													type="button"
 													onClick={() => setSelectedSize(size)}
 													className={classNames(
-														"rounded-md border px-3 py-2 text-sm uppercase",
+														"rounded-md border px-3 py-2 text-sm uppercase w-full",
 														selectedSize === size
 															? "border-black bg-black text-white"
 															: "border-gray-300 bg-white text-gray-900",

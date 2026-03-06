@@ -32,7 +32,7 @@ export default function Header() {
 	return (
 		<div>
 			<Cart open={open} setOpen={setOpen} />
-			<header className="fixed inset-x-0 top-0 z-20">
+			<header className="fixed inset-x-0 top-0 z-5">
 				<motion.nav
 					aria-label="Global"
 					className="mx-auto flex w-full max-w-360 items-center justify-between rounded-b-xl bg-white px-4 py-4 shadow-sm md:px-8"
