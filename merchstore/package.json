@@ -16,6 +16,7 @@
     "@heroicons/react": "^2.2.0",
     "@mui/material": "^7.3.8",
     "@radix-ui/react-slot": "^1.2.4",
+    "@supabase/supabase-js": "^2.98.0",
     "@tailwindcss/postcss": "^4.2.1",
     "@types/node": "25.3.0",
     "@types/react": "19.2.14",
