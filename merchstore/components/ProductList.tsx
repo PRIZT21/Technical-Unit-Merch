@@ -74,7 +74,7 @@ export default function ProductList({
 					) : (
 						<motion.div
 							key={`grid-${activeFilterKey}`}
-							className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+							className="grid grid-cols-2 gap-6 xl:grid-cols-3 2xl:grid-cols-4"
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
