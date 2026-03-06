@@ -5,11 +5,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Search, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import Cart from "@/components/Cart";
 import Badge, { BadgeProps } from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import { useStore } from "@/lib/store/useStore";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -17,8 +18,8 @@ export default function Header() {
 
 	const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 		"& .MuiBadge-badge": {
-			right: 1,
-			top: 2,
+			right: 6,
+			top: 4,
 			border: `2px solid ${(theme.vars ?? theme).palette.background.paper}`,
 			padding: "0 4px",
 		},
@@ -29,92 +30,133 @@ export default function Header() {
 	const totalItems = cart.length;
 
 	return (
-		<div className="">
+		<div>
 			<Cart open={open} setOpen={setOpen} />
 			<header className="fixed inset-x-0 top-0 z-20">
-				<nav
+				<motion.nav
 					aria-label="Global"
-					className="flex items-center justify-between mx-32 lg:px-8 bg-white rounded-b-xl py-4"
+					className="mx-auto flex w-full max-w-360 items-center justify-between rounded-b-xl bg-white px-4 py-4 shadow-sm md:px-8"
+					initial={{ opacity: 0, y: -14 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.35, ease: "easeOut" }}
 				>
-					<div className="flex lg:flex-1">
+					<div className="flex flex-1 items-center">
 						<Link href="/">
 							<span className="sr-only">Technical Unit Logo</span>
 
 							<Image
 								alt="Technical Unit Merch"
-								
 								src="/images/technical_logo.webp"
 								width={200}
 								height={200}
+								className="h-10 w-auto sm:h-12"
 							/>
 						</Link>
 					</div>
-					<div className="flex lg:hidden">
+
+					{/* <div className="flex items-center gap-2 lg:hidden">
+						<StyledBadge badgeContent={totalItems} color="secondary">
+							<button
+								type="button"
+								onClick={() => setOpen(true)}
+								className="rounded-full border-2 border-gray-300 p-2 text-gray-900"
+								aria-label="Open cart"
+							>
+								<ShoppingCart />
+							</button>
+						</StyledBadge>
 						<button
 							type="button"
 							onClick={() => setMobileMenuOpen(true)}
-							className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+							className="rounded-md p-2.5 text-gray-700"
+							aria-label="Open main menu"
 						>
-							<span className="sr-only">Open main menu</span>
 							<Bars3Icon aria-hidden="true" className="size-6" />
 						</button>
-					</div>
-					<div className="hidden lg:flex lg:flex-1 lg:justify-end gap-8">
-						{/* <a
-							href="#"
-							className="text-sm/6 font-semibold text-gray-900 border-2 border-gray-300 rounded-full p-1"
-						>
-							<Search /> 
-						</a>*/}
+					</div> */}
+
+					<div className=" lg:flex lg:flex-1 lg:justify-end">
 						<StyledBadge badgeContent={totalItems} color="secondary">
-							<a
-								onClick={() => setOpen(true)}
-								className="text-sm/6 font-semibold text-gray-900 border-2 rounded-full p-1 border-gray-300 cursor-pointer"
-							>
-								<ShoppingCart />
-							</a>
-						</StyledBadge>
-					</div>
-				</nav>
-				<Dialog
-					open={mobileMenuOpen}
-					onClose={setMobileMenuOpen}
-					className="lg:hidden"
-				>
-					<div className="fixed inset-0 z-50" />
-					<DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-						<div className="flex items-center justify-between">
-							<a href="#" className="-m-1.5 p-1.5">
-								<span className="sr-only">Technical Unit</span>
-								<img
-									alt="technical unit logo"
-									src="/images/technical_logo.webp"
-									className="h-8 w-auto"
-								/>
-							</a>
 							<button
 								type="button"
-								onClick={() => setMobileMenuOpen(false)}
-								className="-m-2.5 rounded-md p-2.5 text-gray-700"
+								onClick={() => setOpen(true)}
+								className="rounded-full border-2 border-gray-300 p-2 text-gray-900"
+								aria-label="Open cart"
 							>
-								<span className="sr-only">Close menu</span>
-								<XMarkIcon aria-hidden="true" className="size-6" />
+								<ShoppingCart />
 							</button>
-						</div>
-						<div className="mt-6 flow-root">
-							<div className="-my-6 divide-y divide-gray-500/10">
-								<div className="py-6">
-									<a
-										href="#"
-										className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-									>
-										Log in
-									</a>
-								</div>
+						</StyledBadge>
+					</div>
+				</motion.nav>
+{/* remove hamburger menu on mobile screens to display only cart */}
+				{/* <AnimatePresence>
+					{mobileMenuOpen && (
+						<Dialog
+							open={mobileMenuOpen}
+							onClose={setMobileMenuOpen}
+							className="lg:hidden"
+						>
+							<motion.div
+								className="fixed inset-0 z-40 bg-black/35"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+							/>
+							<div className="fixed inset-y-0 right-0 z-50 w-[86%] max-w-sm">
+								<motion.div
+									initial={{ x: "100%" }}
+									animate={{ x: 0 }}
+									exit={{ x: "100%" }}
+									transition={{ duration: 0.28, ease: "easeOut" }}
+									className="h-full bg-white p-6 shadow-xl"
+								>
+									<DialogPanel className="flex h-full flex-col">
+										<div className="flex items-center justify-between">
+											<Link href="/" onClick={() => setMobileMenuOpen(false)}>
+												<Image
+													alt="Technical Unit Merch"
+													src="/images/technical_logo.webp"
+													width={130}
+													height={130}
+													className="h-8 w-auto"
+												/>
+											</Link>
+											<button
+												type="button"
+												onClick={() => setMobileMenuOpen(false)}
+												className="rounded-md p-2.5 text-gray-700"
+												aria-label="Close menu"
+											>
+												<XMarkIcon aria-hidden="true" className="size-6" />
+											</button>
+										</div>
+
+										<div className="mt-10 space-y-4">
+											<Link
+												href="#productsSection"
+												onClick={() => setMobileMenuOpen(false)}
+												className="block rounded-lg border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-900"
+											>
+												Shop Collection
+											</Link>
+											<button
+												type="button"
+												onClick={() => {
+													setOpen(true);
+													setMobileMenuOpen(false);
+												}}
+												className="flex w-full items-center justify-between rounded-lg border border-gray-200 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+											>
+												<span>Open Cart</span>
+												<span>{totalItems} item(s)</span>
+											</button>
+										</div>
+									</DialogPanel>
+								</motion.div>
 							</div>
-						</div>
-					</DialogPanel>
-				</Dialog>
+						</Dialog>
+					)}
+				</AnimatePresence> */}
 			</header>
 		</div>
 	);

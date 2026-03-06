@@ -5,6 +5,7 @@ import type { Product } from "@/lib/products";
 import { useStore } from "@/lib/store/useStore";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { AnimatePresence, motion } from "framer-motion";
 
 type ProductOverviewProps = {
 	product: Product;
@@ -145,15 +146,23 @@ export default function ProductOverview({
 	if (!currentVariant) return null;
 
 	return (
-		<div
-			className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md "
+		<motion.div
+			className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/30 p-2 pt-6 backdrop-blur-sm sm:items-center sm:p-4"
 			onClick={onClose}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 0.25, ease: "easeOut" }}
 		>
-			<div
-				className="bg-stone-100 max-h-screen w-full max-w-6xl overflow-hidden rounded-xl m-4 shadow-lg"
+			<motion.div
+				className="m-0 w-full max-w-6xl overflow-hidden rounded-xl bg-stone-100 shadow-lg"
 				onClick={(event) => event.stopPropagation()}
+				initial={{ opacity: 0, y: 24, scale: 0.98 }}
+				animate={{ opacity: 1, y: 0, scale: 1 }}
+				exit={{ opacity: 0, y: 16, scale: 0.98 }}
+				transition={{ duration: 0.3, ease: "easeOut" }}
 			>
-				<div className="pt-6">
+				<div className="max-h-[92vh] overflow-y-auto pt-5 sm:pt-6">
 					<div className="mx-auto flex max-w-7xl justify-end px-4 sm:px-6 lg:px-8">
 						<Button
 							type="button"
@@ -177,7 +186,7 @@ export default function ProductOverview({
 						</ol>
 					</nav>
 
-					<div className="flex flex-col lg:flex-row items-center gap-8 p-8">
+					<div className="flex flex-col gap-6 p-4 sm:gap-8 sm:p-6 lg:flex-row lg:items-start lg:p-8">
 						<div className="shrink-0 flex-1">
 							<div
 								className="relative"
@@ -185,32 +194,45 @@ export default function ProductOverview({
 								onTouchMove={handleTouchMove}
 								onTouchEnd={handleTouchEnd}
 							>
-								<img
-									alt={variantImages[selectedImageIndex].alt}
-									src={variantImages[selectedImageIndex].src}
-									className="aspect-3/4 w-full rounded-lg object-cover"
-								/>
+								<div className="relative overflow-hidden rounded-lg bg-white">
+									<AnimatePresence mode="wait" initial={false}>
+										<motion.img
+											key={`${currentVariant.variantId}-${selectedImageIndex}`}
+											alt={variantImages[selectedImageIndex].alt}
+											src={variantImages[selectedImageIndex].src}
+											className="aspect-3/4 w-full object-cover"
+											initial={{ opacity: 0.4, scale: 1.02 }}
+											animate={{ opacity: 1, scale: 1 }}
+											exit={{ opacity: 0.4, scale: 0.98 }}
+											transition={{ duration: 0.28, ease: "easeOut" }}
+										/>
+									</AnimatePresence>
+								</div>
 								{variantImages.length > 1 && (
 									<>
-										<button
+										<motion.button
 											type="button"
 											onClick={showPreviousImage}
 											className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black px-3 py-2 text-sm shadow hover:bg-gray-800 text-white transition-colors"
 											aria-label="Previous image"
+											whileHover={{ scale: 1.06 }}
+											whileTap={{ scale: 0.92 }}
 										>
 											‹
-										</button>
-										<button
+										</motion.button>
+										<motion.button
 											type="button"
 											onClick={showNextImage}
 											className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black px-3 py-2 text-sm shadow hover:bg-gray-800 text-white transition-colors"
 											aria-label="Next image"
+											whileHover={{ scale: 1.06 }}
+											whileTap={{ scale: 0.92 }}
 										>
 											›
-										</button>
+										</motion.button>
 										<div className="mt-3 flex justify-center gap-2">
 											{variantImages.map((image, idx) => (
-												<button
+												<motion.button
 													key={image.src}
 													type="button"
 													onClick={() => setSelectedImageIndex(idx)}
@@ -221,6 +243,7 @@ export default function ProductOverview({
 															: "bg-gray-300",
 													)}
 													aria-label={`Show image ${idx + 1}`}
+													whileTap={{ scale: 0.88 }}
 												/>
 											))}
 										</div>
@@ -248,39 +271,44 @@ export default function ProductOverview({
 									<h3 className="text-sm font-medium text-gray-900">Variant</h3>
 									<div className="mt-3 flex flex-wrap gap-2">
 										{product.variants.map((variant, idx) => (
-											<Button
+											<motion.div
 												key={variant.variantId}
-												type="button"
-												onClick={() => setSelectedVariantIndex(idx)}
-												className={classNames(
-													"rounded-md border px-3 py-1 text-sm",
-													idx === selectedVariantIndex
-														? "border-black bg-black text-white hover-none"
-														: "border-gray-300 bg-white text-gray-900",
-												)}
+												whileTap={{ scale: 0.96 }}
 											>
-												{variant.color}
-											</Button>
+												<Button
+													type="button"
+													onClick={() => setSelectedVariantIndex(idx)}
+													className={classNames(
+														"rounded-md border px-3 py-1 text-sm",
+														idx === selectedVariantIndex
+															? "border-black bg-black text-white hover-none"
+															: "border-gray-300 bg-white text-gray-900",
+													)}
+												>
+													{variant.color}
+												</Button>
+											</motion.div>
 										))}
 									</div>
 								</div>
 								<div className="mt-8">
 									<h3 className="text-sm font-medium text-gray-900">Size</h3>
-									<div className="mt-3 grid grid-cols-4 gap-2">
+									<div className="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-5 lg:grid-cols-4">
 										{currentVariant.sizes.map((size) => (
-											<Button
-												key={size}
-												type="button"
-												onClick={() => setSelectedSize(size)}
-												className={classNames(
-													"rounded-md border px-3 py-2 text-sm uppercase",
-													selectedSize === size
-														? "border-black bg-black text-white"
-														: "border-gray-300 bg-white text-gray-900",
-												)}
-											>
-												{size}
-											</Button>
+											<motion.div key={size} whileTap={{ scale: 0.96 }}>
+												<Button
+													type="button"
+													onClick={() => setSelectedSize(size)}
+													className={classNames(
+														"rounded-md border px-3 py-2 text-sm uppercase",
+														selectedSize === size
+															? "border-black bg-black text-white"
+															: "border-gray-300 bg-white text-gray-900",
+													)}
+												>
+													{size}
+												</Button>
+											</motion.div>
 										))}
 									</div>
 								</div>
@@ -306,7 +334,7 @@ export default function ProductOverview({
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+			</motion.div>
+		</motion.div>
 	);
 }

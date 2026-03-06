@@ -1,10 +1,9 @@
 "use client";
 import ProductList from "@/components/ProductList";
-import { Button } from "@/components/ui/button";
-import { Handbag, Palette, Scaling } from "lucide-react";
 import Filter from "@/components/Filter";
 import { useState } from "react";
 import { products } from "@/lib/products";
+import { motion } from "framer-motion";
 
 export default function CategoriesSection() {
 	const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -21,26 +20,49 @@ export default function CategoriesSection() {
 	});
 
 	return (
-		<>
-			<div className="flex gap-12 items-start mt-16 mx-32">
-				<div className="flex flex-col gap-6">
-					<h3 className="text-3xl font-bold">Category</h3>
+		<motion.section
+			id="productsSection"
+			className="mx-auto mt-12 w-full max-w-360 px-4 pb-16 sm:mt-16 sm:px-6 lg:px-8"
+			initial={{ opacity: 0, y: 24 }}
+			whileInView={{ opacity: 1, y: 0 }}
+			viewport={{ once: true, amount: 0.2 }}
+			transition={{ duration: 0.45, ease: "easeOut" }}
+		>
+			<div className="grid items-start gap-8 lg:grid-cols-[minmax(220px,280px)_1fr] xl:gap-12">
+				<motion.aside
+					className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6 lg:sticky lg:top-24"
+					initial={{ opacity: 0, x: -18 }}
+					whileInView={{ opacity: 1, x: 0 }}
+					viewport={{ once: true, amount: 0.3 }}
+					transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
+				>
+					<h3 className="text-2xl font-bold sm:text-3xl">Category</h3>
+					<p className="mt-2 text-sm text-gray-500">
+						Refine by product type, color, and size.
+					</p>
 					<Filter
 						setSelectedColor={setSelectedColor}
 						setSelectedSize={setSelectedSize}
 						setSelectedProduct={setSelectedProduct}
 						selectedColor={selectedColor}
 						selectedProduct={selectedProduct}
+						selectedSize={selectedSize}
 					/>
-				</div>
-				<div>
+				</motion.aside>
+				<motion.div
+					className="min-w-0"
+					initial={{ opacity: 0, y: 18 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true, amount: 0.2 }}
+					transition={{ duration: 0.45, ease: "easeOut", delay: 0.15 }}
+				>
 					<ProductList
 						selectedColor={selectedColor}
 						selectedSize={selectedSize}
 						filteredProducts={filteredProducts}
 					/>
-				</div>
+				</motion.div>
 			</div>
-		</>
+		</motion.section>
 	);
 }
