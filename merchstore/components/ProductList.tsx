@@ -125,7 +125,7 @@ export default function ProductList({
 
 											<div className="mt-4 flex items-end justify-between gap-3 px-1">
 												<div className="min-w-0">
-													<h3 className="line-clamp-1 text-xl font-bold sm:text-2xl">
+													<h3 className=" text-xl font-bold sm:text-2xl">
 														{product.name}
 													</h3>
 													<p className="mt-1 text-xs text-gray-500">

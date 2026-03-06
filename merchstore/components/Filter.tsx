@@ -28,22 +28,22 @@ const colorOptions = [
 	},
 ];
 
-const sizeOptions = ["All", "XS", "S", "M", "L", "XL", "XXL"];
+// const sizeOptions = ["All", "XS", "S", "M", "L", "XL", "XXL"];
 
 export default function Filter({
 	setSelectedColor,
-	setSelectedSize,
+	// setSelectedSize,
 	setSelectedProduct,
 	selectedColor,
 	selectedProduct,
-	selectedSize,
+	// selectedSize,
 }: {
 	setSelectedColor: (value: string) => void;
-	setSelectedSize: (value: string) => void;
+	// setSelectedSize: (value: string) => void;
 	setSelectedProduct: (value: string) => void;
 	selectedColor: string | null;
 	selectedProduct: string | null;
-	selectedSize: string | null;
+	// selectedSize: string | null;
 }) {
 	return (
 		<motion.div
@@ -146,29 +146,8 @@ export default function Filter({
 				}}
 			>
 				<label className="mb-2 block text-sm font-medium">Size</label>
-				<div className="grid grid-cols-4 gap-2 sm:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5">
-					{sizeOptions.map((size) => {
-						const isSelectedSize =
-							(size === "All" && !selectedSize) || selectedSize === size;
-
-						return (
-							<motion.button
-								key={size}
-								type="button"
-								onClick={() => setSelectedSize(size === "All" ? "" : size)}
-								whileHover={{ y: -1 }}
-								whileTap={{ scale: 0.96 }}
-								aria-pressed={isSelectedSize}
-								className={`rounded border px-2 py-1 text-xs uppercase transition sm:text-sm ${
-									isSelectedSize
-										? "border-gray-900 bg-gray-900 text-white"
-										: "border-gray-300 hover:bg-gray-100"
-								}`}
-							>
-								{size}
-							</motion.button>
-						);
-					})}
+				<div className="flex flex-1">
+					Products are available in all sizes
 				</div>
 			</motion.div>
 		</motion.div>

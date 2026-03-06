@@ -42,11 +42,11 @@ export default function CategoriesSection() {
 					</p>
 					<Filter
 						setSelectedColor={setSelectedColor}
-						setSelectedSize={setSelectedSize}
+						// setSelectedSize={setSelectedSize}
 						setSelectedProduct={setSelectedProduct}
 						selectedColor={selectedColor}
 						selectedProduct={selectedProduct}
-						selectedSize={selectedSize}
+						// selectedSize={selectedSize}
 					/>
 				</motion.aside>
 				<motion.div
