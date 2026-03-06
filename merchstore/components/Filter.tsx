@@ -68,7 +68,7 @@ export default function Filter({
 				}}
 			>
 				<label className="mb-2 block text-sm font-medium">Product</label>
-				<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+				<div className="grid grid-cols-2 gap-2">
 					{productOptions.map((product) => {
 						const isSelected =
 							(product === "All" && !selectedProduct) ||
@@ -84,7 +84,7 @@ export default function Filter({
 								whileHover={{ y: -2 }}
 								whileTap={{ scale: 0.96 }}
 								aria-pressed={isSelected}
-								className={`rounded border px-3 py-1 text-center text-sm transition ${
+								className={`rounded border px-1 py-1 text-center text-sm transition ${
 									isSelected
 										? "border-gray-900 bg-gray-900 text-white"
 										: "border-gray-300 hover:bg-gray-100"

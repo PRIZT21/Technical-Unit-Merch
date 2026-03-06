@@ -28,7 +28,7 @@ export default function CategoriesSection() {
 			viewport={{ once: true, amount: 0.2 }}
 			transition={{ duration: 0.45, ease: "easeOut" }}
 		>
-			<div className="grid items-start gap-8 lg:grid-cols-[minmax(220px,280px)_1fr] xl:gap-12">
+			<div className="grid items-start gap-8 lg:grid-cols-[minmax(auto,280px)_1fr] xl:gap-12">
 				<motion.aside
 					className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6 lg:sticky lg:top-24"
 					initial={{ opacity: 0, x: -18 }}
