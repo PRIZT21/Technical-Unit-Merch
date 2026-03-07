@@ -1,6 +1,6 @@
 // receive reference after payment is done.
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 export async function GET(req: Request, {params}: {params : {reference: string}}){
     const reference = params.reference;
@@ -16,18 +16,22 @@ export async function GET(req: Request, {params}: {params : {reference: string}}
 
     if(result.data.status === 'success'){
         //1. update supabase: mark order as paid
-        const {error} = await supabase
+        const metadata = result.data.metadata;
+        const {error} = await supabaseAdmin
         .from('orders')
         .insert([{
             customerEmail: result.data.customer.email,
             totalAmount: result.data.amount / 100, // convert from kobo to naira
             packstackReference: reference,
             status: 'success',
-            orderItems: result.data.metadata.cartItems, // assuming cartItems is an array of items in the order
+            customerName: metadata.customerName,
+            department: metadata.department,
+            level: metadata.level,
+            totalQuantity: metadata.totalQuantity,
+            orderItems: metadata.cartItems, // assuming cartItems is an array of items in the order
         }])
 
         if (error) return NextResponse.json({error: "Order save failed"}, {status: 500});
-        //2. trigger email: send receipt to user
 
         return NextResponse.json({success: true});
     }

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request){
-    const {email, amount, productId, size, variantId, color} = await req.json();
+    const {name, department, level, totalQty, email, amount, cartItems} = await req.json();
 
     //expected amount in kobo(multiply by 100)
     const amountInKobo = amount * 100;
@@ -14,12 +14,15 @@ export async function POST(req: Request){
         },
         body: JSON.stringify({
             email,
-            productId,
-            size,
-            variantId,
-            color,
             amount: amountInKobo,
             callback_url: `${process.env.NEXT_PUBLIC_SITE_URL}/verify-payment`, //url for after payment.
+            metadata: {
+                customerName: name,
+                department: department,
+                level: level,
+                cartItems: cartItems, 
+                totalQuantity: totalQty,
+            }
         }),
     })
 

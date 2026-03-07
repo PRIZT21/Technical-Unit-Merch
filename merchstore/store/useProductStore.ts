@@ -5,13 +5,13 @@ import { Product } from '@/types/inventory';
 
 const BUCKET_URL = "https://fazlswkqdaorliesiuxc.supabase.co/storage/v1/object/public/product-images/";
 
-interface MerchState {
+interface ProductState {
   allProducts: Product[];
   isLoading: boolean;
   fetchInventory: () => Promise<void>;
 }
 
-export const useMerchStore = create<MerchState>((set) => ({
+export const useProductStore = create<ProductState>((set) => ({
   allProducts: [],
   isLoading: false,
 
@@ -47,8 +47,8 @@ export const useMerchStore = create<MerchState>((set) => ({
       ...product,
       variants: product.variants.map((v: any) => ({
         ...v,
-        imageSrc: v.imageSrc ? `${BUCKET_URL}${v.imageSrc}` : '',
-        imageBackSrc: v.imageBackSrc ? `${BUCKET_URL}${v.imageBackSrc}` : ''
+        imageSrc: v.imageSrc ? `${BUCKET_URL}${v.imageSrc}` : null,
+        imageBackSrc: v.imageBackSrc ? `${BUCKET_URL}${v.imageBackSrc}` : null
       }))
     }));
 
