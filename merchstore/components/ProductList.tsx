@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
-import { products } from "@/lib/products";
+import { useMerchStore } from "@/store/useProductStore";
 import ProductOverview from "@/components/ProductOverview";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -17,6 +17,7 @@ export default function ProductList({
 	selectedColor: string | null;
 	selectedSize: string | null;
 }) {
+	const products = useMerchStore((state) => state.allProducts);
 	const [selectedProduct, setSelectedProduct] = useState<null | {
 		productId: string;
 		variantIndex: number;
