@@ -3,21 +3,24 @@ import ProductList from "@/components/ProductList";
 import Filter from "@/components/Filter";
 import { useState } from "react";
 // import { products } from "@/lib/products";
-import {getProducts} from "@/lib/getProduct";
 import { motion } from "framer-motion";
+import { useMerchStore } from "@/store/useProductStore";
 
-export default async function CategoriesSection() {
+export default function CategoriesSection() {
 	const [selectedColor, setSelectedColor] = useState<string | null>(null);
 	const [selectedSize, setSelectedSize] = useState<string | null>(null);
 	const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+	const products = useMerchStore((state) => state.allProducts);
+	console.log(products);
 
-const products = await getProducts();
-console.log(products)
 	const filteredProducts = products.filter((product) => {
 		const productMatch = !selectedProduct || product.name === selectedProduct;
 
 		const colorMatch =
-			!selectedColor || product.variants.some((v) => v.color === selectedColor);
+			!selectedColor ||
+			product.variants.some(
+				(v: { color: string }) => v.color === selectedColor,
+			);
 
 		return productMatch && colorMatch;
 	});
