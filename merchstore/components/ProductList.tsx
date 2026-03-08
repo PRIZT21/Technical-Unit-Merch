@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
 import { products } from "@/lib/products";
 import ProductOverview from "@/components/ProductOverview";
@@ -109,16 +110,20 @@ export default function ProductList({
 											whileTap={{ scale: 0.985 }}
 										>
 											<div className="relative overflow-hidden rounded-xl bg-gray-100">
-												<img
+												<Image
 													alt={variant.imageAlt}
 													src={variant.imageSrc}
+													width={800}
+													height={800}
 													className="aspect-square w-full object-cover transition-opacity duration-500 group-hover:opacity-0"
 												/>
-												<img
+												<Image
 													alt={
 														variant.imageBackAlt ?? `${product.name} back view`
 													}
 													src={variant.imageBackSrc ?? variant.imageSrc}
+													width={800}
+													height={800}
 													className="absolute inset-0 aspect-square w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
 												/>
 											</div>
