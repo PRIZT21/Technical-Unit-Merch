@@ -5,12 +5,21 @@ import { useState } from "react";
 // import { products } from "@/lib/products";
 import { motion } from "framer-motion";
 import { useMerchStore } from "@/store/useProductStore";
+import { useEffect } from "react";
 
 export default function CategoriesSection() {
 	const [selectedColor, setSelectedColor] = useState<string | null>(null);
 	const [selectedSize, setSelectedSize] = useState<string | null>(null);
 	const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
 	const products = useMerchStore((state) => state.allProducts);
+	const fetchInventory = useMerchStore((state) => state.fetchInventory);
+	const isLoading = useMerchStore((state) => state.isLoading);
+
+	useEffect(() => {
+		fetchInventory();
+	}, [fetchInventory]);
+
+	if (isLoading) return <p>Loading...</p>;
 	console.log(products);
 
 	const filteredProducts = products.filter((product) => {
