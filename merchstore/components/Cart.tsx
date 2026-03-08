@@ -7,7 +7,7 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useStore } from "@/lib/store/useStore";
-import { products } from "@/lib/products";
+import { useMerchStore } from "@/store/useProductStore";
 import { toast } from "sonner";
 import QuantityCount from "@/components/ui/QuantityCount";
 
@@ -21,6 +21,7 @@ export default function Cart({
 	const items = useStore((state) => state.cart);
 	const removeFromCart = useStore((state) => state.removeFromCart);
 	const updateCartQuantity = useStore((state) => state.updateCartQuantity);
+	const allProducts = useMerchStore((state) => state.allProducts);
 
 	const parsePrice = (price: string) => {
 		const numeric = Number(price.replace(/[^\d.]/g, ""));
@@ -38,7 +39,8 @@ export default function Cart({
 		formatCurrency(parsePrice(price) * quantity);
 
 	const cartItems = items.map((item) => {
-		const product = products.find((p) => p.productId === item.productId);
+		const product = allProducts.find((p) => p.productId === item.productId);
+
 		const variantById = product?.variants.find(
 			(v) => v.variantId === item.variantId,
 		);
