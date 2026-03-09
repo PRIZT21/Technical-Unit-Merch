@@ -91,7 +91,7 @@ export default function Cart({
 				}),
 			{
 				loading: "Removing from cart...",
-				success: (data) => `${data.name} has been removed from your bag`,
+				success: (data) => `${data.name} has been removed from your cart`,
 				error: "Could not remove item",
 			},
 		);
@@ -102,7 +102,7 @@ export default function Cart({
 		itemName: string,
 	) => {
 		toast(`Remove ${itemName}?`, {
-			description: "This item will be removed from your bag.",
+			description: "This item will be removed from your cart.",
 			action: {
 				label: "Yes",
 				onClick: () => handleRemoveFromCart(originalItem, itemName),
@@ -159,7 +159,7 @@ export default function Cart({
 													</DialogTitle>
 													<p className="mt-1 text-sm text-gray-600">
 														{totalUnits} {totalUnits === 1 ? "item" : "items"}{" "}
-														in your bag
+														in your cart
 													</p>
 												</div>
 												<button
