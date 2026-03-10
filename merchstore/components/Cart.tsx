@@ -290,9 +290,9 @@ export default function Cart({
 												Shipping and taxes calculated at checkout.
 											</p>
 											<div className="mt-4">
-												<button
+												<a
+													href="/Checkout"
 													type="button"
-													disabled={cartItems.length === 0}
 													className={`flex w-full items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-xs transition-colors ${
 														cartItems.length === 0
 															? "cursor-not-allowed bg-gray-300"
@@ -300,7 +300,7 @@ export default function Cart({
 													}`}
 												>
 													Checkout
-												</button>
+												</a>
 											</div>
 										</div>
 										<div className="mt-5 flex justify-center text-center text-sm text-gray-500">
