@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useStore } from "@/lib/store/useStore";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type VerificationStatus = "loading" | "success" | "failed";
 
@@ -89,7 +90,11 @@ export default function VerifyPaymentPage() {
 				<p className="mt-3 text-sm text-gray-700">{message}</p>
 
 				{status === "loading" && (
-					<p className="mt-4 text-sm text-gray-500">Please wait...</p>
+					<div className="mt-5 space-y-3">
+						<Skeleton className="mx-auto h-4 w-44" />
+						<Skeleton className="mx-auto h-4 w-36" />
+						<Skeleton className="mx-auto mt-2 h-10 w-32 rounded-lg" />
+					</div>
 				)}
 
 				{status === "success" && (

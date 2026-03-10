@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useStore } from "@/lib/store/useStore";
 import { useMerchStore } from "@/store/useProductStore";
 import CheckoutButton from "@/components/CheckoutButton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const schema = z.object({
 	name: z.string().trim().min(2, "Name must be at least 2 characters"),
@@ -25,6 +26,7 @@ export default function PayStackPayment() {
 	const cart = useStore((state) => state.cart);
 	const allProducts = useMerchStore((state) => state.allProducts);
 	const fetchInventory = useMerchStore((state) => state.fetchInventory);
+	const isInventoryLoading = useMerchStore((state) => state.isLoading);
 
 	useEffect(() => {
 		if (allProducts.length === 0) {
@@ -72,6 +74,9 @@ export default function PayStackPayment() {
 		() => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
 		[cartItems],
 	);
+
+	const shouldShowLoadingSkeleton =
+		cart.length > 0 && isInventoryLoading && allProducts.length === 0;
 
 	const {
 		register,
@@ -130,6 +135,35 @@ export default function PayStackPayment() {
 			toast.error(message);
 		}
 	};
+
+	if (shouldShowLoadingSkeleton) {
+		return (
+			<div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+				<div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+					<Skeleton className="mx-auto h-8 w-44" />
+					<div className="mt-6 space-y-4">
+						<div>
+							<Skeleton className="h-4 w-16" />
+							<Skeleton className="mt-2 h-10 w-full rounded-lg" />
+						</div>
+						<div>
+							<Skeleton className="h-4 w-16" />
+							<Skeleton className="mt-2 h-10 w-full rounded-lg" />
+						</div>
+						<div>
+							<Skeleton className="h-4 w-24" />
+							<Skeleton className="mt-2 h-10 w-full rounded-lg" />
+						</div>
+						<div>
+							<Skeleton className="h-4 w-12" />
+							<Skeleton className="mt-2 h-10 w-full rounded-lg" />
+						</div>
+						<Skeleton className="mt-2 h-10 w-full rounded-lg" />
+					</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
