@@ -1,6 +1,7 @@
 // receive reference after payment is done.
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { sendOrderConfirmation } from '@/lib/emailService';
 
 export async function GET(req: Request, {params}: {params : {reference: string}}){
     const reference = params.reference;
@@ -30,6 +31,17 @@ export async function GET(req: Request, {params}: {params : {reference: string}}
             totalQuantity: metadata.totalQuantity,
             orderItems: metadata.cartItems, // assuming cartItems is an array of items in the order
         }])
+
+        //for speed(1-5s after success)
+        if (!error) {
+      // TRIGGER EMAIL HERE
+        await sendOrderConfirmation(result.data.customer.email, {
+          customerName: metadata.customerName,
+          reference: reference,
+          totalAmount: result.data.amount / 100,
+          orderItems: metadata.cartItems
+        });
+      }
 
         if (error) return NextResponse.json({error: "Order save failed"}, {status: 500});
 

@@ -1,9 +1,9 @@
 'use client';
 import { useEffect } from 'react';
-import { useMerchStore } from '@/store/useProductStore';
+import { useProductStore } from '@/store/useProductStore';
 
 export default function TestPage() {
-  const { allProducts, isLoading, fetchInventory } = useMerchStore();
+  const { allProducts, isLoading, fetchInventory } = useProductStore();
 
   useEffect(() => {
     fetchInventory();

@@ -1,6 +1,7 @@
 import {crypto} from 'crypto';//built crypto module in node, no need to install
 import {NextResponse} from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { sendOrderConfirmation } from '@/lib/emailService';
 
 export async function POST(req: Request) {
     const body = await req.text(); // Get raw body as text
@@ -43,6 +44,17 @@ export async function POST(req: Request) {
           status: 'success',
         },
       ]);
+
+      //in case verify route crashes(reliability)
+      if (!error) {
+      // TRIGGER EMAIL HERE
+        await sendOrderConfirmation(customer.email, {
+          customerName: metadata.customerName,
+          reference: reference,
+          totalAmount: amount / 100,
+          orderItems: metadata.cartItems
+        });
+      }
 
       if (error) {
         console.error("Webhook Database Error:", error.message);
