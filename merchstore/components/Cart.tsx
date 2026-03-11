@@ -175,21 +175,21 @@ export default function Cart({
 													<DialogTitle className="text-xl font-semibold tracking-tight text-gray-900">
 														Shopping cart
 													</DialogTitle>
-										<div className="mt-1 flex items-center gap-3">
-													<p className="text-sm text-gray-600">
-														{totalUnits} {totalUnits === 1 ? "item" : "items"}{" "}
-														in your cart
-													</p>
-													{cartItems.length > 0 && (
-														<button
-															type="button"
-															onClick={handleClearCart}
-															className="cursor-pointer text-xs font-medium text-red-500 transition-colors hover:text-red-700"
-														>
-															Clear cart
-														</button>
-													)}
-												</div>
+													<div className="mt-1 flex items-center gap-3">
+														<p className="text-sm text-gray-600">
+															{totalUnits} {totalUnits === 1 ? "item" : "items"}{" "}
+															in your cart
+														</p>
+														{cartItems.length > 0 && (
+															<button
+																type="button"
+																onClick={handleClearCart}
+																className="cursor-pointer text-xs font-medium text-red-500 transition-colors hover:text-red-700"
+															>
+																Clear cart
+															</button>
+														)}
+													</div>
 												</div>
 												<button
 													type="button"
@@ -250,7 +250,10 @@ export default function Cart({
 																					)}
 																				</p>
 																				<p className="text-xs text-gray-500">
-																					Each {item.price.startsWith("₦") ? item.price : `₦${item.price}`}
+																					Each{" "}
+																					{item.price.startsWith("₦")
+																						? item.price
+																						: `₦${item.price}`}
 																				</p>
 																			</div>
 																		</div>

@@ -155,26 +155,16 @@ export default function ProductOverview({
 			transition={{ duration: 0.25, ease: "easeOut" }}
 		>
 			<motion.div
-				className="m-0 w-full max-w-6xl overflow-hidden rounded-xl bg-stone-100 shadow-lg"
+				className="m-0 flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl bg-stone-100 shadow-lg"
 				onClick={(event) => event.stopPropagation()}
 				initial={{ opacity: 0, y: 24, scale: 0.98 }}
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				exit={{ opacity: 0, y: 16, scale: 0.98 }}
 				transition={{ duration: 0.3, ease: "easeOut" }}
 			>
-				<div className="max-h-[92vh] overflow-y-auto pt-5 sm:pt-6">
-					<div className="mx-auto flex max-w-7xl justify-end px-4 sm:px-6 lg:px-8">
-						<Button
-							type="button"
-							onClick={onClose}
-							className="rounded-md border border-gray-300 px-3 py-1 text-sm bg-white text-gray-900 hover:bg-gray-100 hover:text-black"
-						>
-							Close
-						</Button>
-					</div>
-
+				<div className="flex shrink-0 items-center justify-between border-b border-gray-200 bg-stone-100 px-4 py-3 sm:px-6 lg:px-8">
 					<nav aria-label="Breadcrumb">
-						<ol className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+						<ol className="flex items-center space-x-2">
 							<li className="text-sm">
 								<a
 									aria-current="page"
@@ -185,7 +175,16 @@ export default function ProductOverview({
 							</li>
 						</ol>
 					</nav>
+					<Button
+						type="button"
+						onClick={onClose}
+						className="rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-900 hover:bg-gray-100 hover:text-black"
+					>
+						Close
+					</Button>
+				</div>
 
+				<div className="flex-1 overflow-y-auto">
 					<div className="flex flex-col gap-6 p-4 sm:gap-8 sm:p-6 lg:flex-row lg:items-start lg:p-8">
 						<div className="shrink-0 flex-1">
 							<div
@@ -265,7 +264,9 @@ export default function ProductOverview({
 
 							<div className="mt-4">
 								<p className="text-3xl tracking-tight text-gray-900">
-								{product.price.startsWith("₦") ? product.price : `₦${product.price}`}
+									{product.price.startsWith("₦")
+										? product.price
+										: `₦${product.price}`}
 								</p>
 								<div className="mt-10">
 									<h3 className="text-sm font-medium text-gray-900">Variant</h3>
@@ -312,27 +313,30 @@ export default function ProductOverview({
 										))}
 									</div>
 								</div>
-								{hasAddedToCart ? (
-									<a
-										href="#productsSection"
-										onClick={onClose}
-										className="mt-10 flex w-full items-center justify-center rounded-md bg-black px-8 py-3 text-base font-medium text-white transition-colors hover:bg-black/90"
-									>
-										Continue Shopping
-										<span aria-hidden="true"> &rarr;</span>
-									</a>
-								) : (
-									<Button
-										type="button"
-										className="mt-10 flex w-full items-center justify-center rounded-md bg-black px-8 py-3 text-base font-medium text-white transition-colors hover:bg-black/90"
-										onClick={handleAddToCart}
-									>
-										Add to cart
-									</Button>
-								)}
 							</div>
 						</div>
 					</div>
+				</div>
+
+				<div className="shrink-0 border-t border-gray-200 bg-stone-100 px-4 py-4 sm:px-6 lg:px-8">
+					{hasAddedToCart ? (
+						<a
+							href="#productsSection"
+							onClick={onClose}
+							className="flex w-full items-center justify-center rounded-md bg-black px-8 py-3 text-base font-medium text-white transition-colors hover:bg-black/90"
+						>
+							Continue Shopping
+							<span aria-hidden="true"> &rarr;</span>
+						</a>
+					) : (
+						<Button
+							type="button"
+							className="flex w-full items-center justify-center rounded-md bg-black px-8 py-3 text-base font-medium text-white transition-colors hover:bg-black/90"
+							onClick={handleAddToCart}
+						>
+							Add to cart
+						</Button>
+					)}
 				</div>
 			</motion.div>
 		</motion.div>
