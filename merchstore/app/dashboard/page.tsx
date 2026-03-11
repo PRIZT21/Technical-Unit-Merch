@@ -98,15 +98,28 @@ function PasswordGate({ onAuth }: { onAuth: (secret: string) => void }) {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError("");
+		const candidate = value.trim();
+		if (!candidate) {
+			setError("Enter your admin password.");
+			return;
+		}
 		setLoading(true);
 		try {
 			const res = await fetch("/api/dashboard/orders", {
-				headers: { Authorization: `Bearer ${value}` },
+				headers: { Authorization: `Bearer ${candidate}` },
+				cache: "no-store",
 			});
 			if (res.ok) {
-				onAuth(value);
+				onAuth(candidate);
 			} else {
-				setError("Invalid password.");
+				const payload = (await res.json().catch(() => null)) as {
+					error?: string;
+				} | null;
+				setError(
+					payload?.error === "Unauthorized"
+						? "Invalid password."
+						: (payload?.error ?? "Unable to sign in."),
+				);
 			}
 		} catch {
 			setError("Unable to connect. Try again.");
@@ -163,11 +176,26 @@ export default function Dashboard() {
 		try {
 			const res = await fetch("/api/dashboard/orders", {
 				headers: { Authorization: `Bearer ${s}` },
+				cache: "no-store",
 			});
-			if (!res.ok) throw new Error("Failed to load orders.");
+			if (!res.ok) {
+				const payload = (await res.json().catch(() => null)) as {
+					error?: string;
+					details?: string | null;
+				} | null;
+				throw new Error(
+					payload?.details ?? payload?.error ?? "Failed to load orders.",
+				);
+			}
 			const json = (await res.json()) as { orders: Order[] };
 			setOrders(json.orders ?? []);
 		} catch (err) {
+			if (err instanceof Error && err.message === "Failed to fetch") {
+				setError(
+					"Unable to reach dashboard API. Restart dev server and try again.",
+				);
+				return;
+			}
 			setError(err instanceof Error ? err.message : "Unknown error");
 		} finally {
 			setLoading(false);

@@ -109,6 +109,8 @@ export async function GET(
 		);
 	}
 
+	console.log(existingOrder)
+
 	if (!existingOrder) {
 		const metadata = result.data.metadata ?? {};
 		const { error } = await supabaseAdmin.from("orders").insert([
@@ -136,6 +138,7 @@ export async function GET(
 
 		const email = result.data.customer?.email;
 		if (email) {
+			console.log(email);
 			await sendOrderConfirmation(email, {
 				customerName: metadata.customerName ?? "Customer",
 				phoneNumber: metadata.phoneNumber,
@@ -143,12 +146,12 @@ export async function GET(
 				totalAmount: (result.data.amount ?? 0) / 100,
 				orderItems: Array.isArray(metadata.cartItems)
 					? (metadata.cartItems as {
-							quantity: number;
-							name: string;
-							color: string;
-							size: string;
-							price: number;
-						}[])
+						quantity: number;
+						name: string;
+						color: string;
+						size: string;
+						price: number;
+					}[])
 					: [],
 			});
 		}

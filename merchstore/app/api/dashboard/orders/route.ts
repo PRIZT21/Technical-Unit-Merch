@@ -1,4 +1,4 @@
- import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function GET(req: Request) {
@@ -12,22 +12,27 @@ export async function GET(req: Request) {
 	}
 
 	const authHeader = req.headers.get("authorization");
-	const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+	const token = authHeader?.startsWith("Bearer ")
+		? authHeader.slice(7).trim()
+		: null;
+	const normalizedAdminSecret = adminSecret.trim();
 
-	if (!token || token !== adminSecret) {
+	if (!token || token !== normalizedAdminSecret) {
 		return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 	}
 
 	const { data, error } = await supabaseAdmin
 		.from("orders")
-		.select(
-			"id, paystackReference, customerName, customerEmail, phoneNumber, department, level, totalAmount, totalQuantity, orderItems, status, created_at",
-		)
+		.select("*")
 		.order("created_at", { ascending: false });
 
 	if (error) {
 		return NextResponse.json(
-			{ error: "Failed to fetch orders" },
+			{
+				error: "Failed to fetch orders",
+				details: error.message ?? error.details ?? null,
+				hint: error.hint ?? null,
+			},
 			{ status: 500 },
 		);
 	}

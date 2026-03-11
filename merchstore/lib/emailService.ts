@@ -151,8 +151,8 @@ export const sendOrderConfirmation = async (
 	orderDetails: OrderDetails,
 ) => {
 	try {
-		const { customerName, reference, totalAmount, orderItems } = orderDetails;
-
+    const { customerName, reference, totalAmount, orderItems, phoneNumber } = orderDetails;
+console.log(orderDetails)
 		await resend.emails.send({
 			from: "Technical Unit Merch <ctech.bui@bowen.edu.ng>",
 			to: email,
@@ -162,7 +162,7 @@ export const sendOrderConfirmation = async (
 				reference,
 				totalAmount,
 				orderItems,
-				orderDetails.phoneNumber,
+				phoneNumber,
 			),
 		});
 	} catch (error) {
