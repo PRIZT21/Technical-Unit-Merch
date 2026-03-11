@@ -7,7 +7,7 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useStore } from "@/lib/store/useStore";
-import { products } from "@/lib/products";
+import { useMerchStore } from "@/store/useProductStore";
 import { toast } from "sonner";
 import QuantityCount from "@/components/ui/QuantityCount";
 
@@ -21,6 +21,7 @@ export default function Cart({
 	const items = useStore((state) => state.cart);
 	const removeFromCart = useStore((state) => state.removeFromCart);
 	const updateCartQuantity = useStore((state) => state.updateCartQuantity);
+	const allProducts = useMerchStore((state) => state.allProducts);
 
 	const parsePrice = (price: string) => {
 		const numeric = Number(price.replace(/[^\d.]/g, ""));
@@ -38,7 +39,8 @@ export default function Cart({
 		formatCurrency(parsePrice(price) * quantity);
 
 	const cartItems = items.map((item) => {
-		const product = products.find((p) => p.productId === item.productId);
+		const product = allProducts.find((p) => p.productId === item.productId);
+
 		const variantById = product?.variants.find(
 			(v) => v.variantId === item.variantId,
 		);
@@ -89,7 +91,7 @@ export default function Cart({
 				}),
 			{
 				loading: "Removing from cart...",
-				success: (data) => `${data.name} has been removed from your bag`,
+				success: (data) => `${data.name} has been removed from your cart`,
 				error: "Could not remove item",
 			},
 		);
@@ -100,7 +102,7 @@ export default function Cart({
 		itemName: string,
 	) => {
 		toast(`Remove ${itemName}?`, {
-			description: "This item will be removed from your bag.",
+			description: "This item will be removed from your cart.",
 			action: {
 				label: "Yes",
 				onClick: () => handleRemoveFromCart(originalItem, itemName),
@@ -157,7 +159,7 @@ export default function Cart({
 													</DialogTitle>
 													<p className="mt-1 text-sm text-gray-600">
 														{totalUnits} {totalUnits === 1 ? "item" : "items"}{" "}
-														in your bag
+														in your cart
 													</p>
 												</div>
 												<button
@@ -288,9 +290,9 @@ export default function Cart({
 												Shipping and taxes calculated at checkout.
 											</p>
 											<div className="mt-4">
-												<button
+												<a
+													href="/Checkout"
 													type="button"
-													disabled={cartItems.length === 0}
 													className={`flex w-full items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-xs transition-colors ${
 														cartItems.length === 0
 															? "cursor-not-allowed bg-gray-300"
@@ -298,7 +300,7 @@ export default function Cart({
 													}`}
 												>
 													Checkout
-												</button>
+												</a>
 											</div>
 										</div>
 										<div className="mt-5 flex justify-center text-center text-sm text-gray-500">

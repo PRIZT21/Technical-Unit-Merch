@@ -80,7 +80,7 @@ export default function Header() {
 							<button
 								type="button"
 								onClick={() => setOpen(true)}
-								className="rounded-full border-2 border-gray-300 p-2 text-gray-900"
+								className="rounded-full border-2 border-gray-300 p-2 text-gray-900 cursor-pointer"
 								aria-label="Open cart"
 							>
 								<ShoppingCart />

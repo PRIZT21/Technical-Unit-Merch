@@ -16,7 +16,6 @@ const colorOptions = [
 		value: "",
 		bg: "bg-gradient-to-br from-white via-blue-600 to-amber-800",
 	},
-	{ name: "Navy Blue", value: "Navy Blue", bg: "bg-blue-900" },
 	{ name: "Black", value: "Black", bg: "bg-black" },
 	{ name: "Blue", value: "Blue", bg: "bg-blue-600" },
 	{ name: "Grey", value: "Grey", bg: "bg-gray-500" },
