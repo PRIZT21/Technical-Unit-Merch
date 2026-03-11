@@ -139,7 +139,7 @@ export default function ProductList({
 													</p>
 												</div>
 												<p className="shrink-0 text-base font-semibold sm:text-lg">
-													{product.price}
+														{product.price.startsWith("₦") ? product.price : `₦${product.price}`}
 												</p>
 											</div>
 

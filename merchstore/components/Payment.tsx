@@ -3,11 +3,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useStore } from "@/lib/store/useStore";
 import { useMerchStore } from "@/store/useProductStore";
 import CheckoutButton from "@/components/CheckoutButton";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const schema = z.object({
@@ -23,7 +25,9 @@ const schema = z.object({
 		.string()
 		.trim()
 		.min(2, "Department must be at least 2 characters"),
-	level: z.string().trim().min(2, "Level must be at least 2 characters"),
+	level: z.enum(["100", "200", "300", "400", "500"] as const, {
+		message: "Please select a valid level",
+	}),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -96,7 +100,7 @@ export default function PayStackPayment() {
 			email: "",
 			phoneNumber: "",
 			department: "",
-			level: "",
+			level: undefined,
 		},
 	});
 
@@ -176,6 +180,9 @@ export default function PayStackPayment() {
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
 			<div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+				<Button variant="outline" size="sm" className="mb-4">
+					<Link href="/">Back to Home</Link>
+				</Button>
 				<h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
 					Checkout Details
 				</h2>
@@ -251,12 +258,17 @@ export default function PayStackPayment() {
 						<label className="mb-1 block text-sm font-medium text-gray-700">
 							Level
 						</label>
-						<input
+						<select
 							{...register("level")}
-							type="text"
-							placeholder="400"
-							className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none ring-0 transition focus:border-black"
-						/>
+							className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none ring-0 transition focus:border-black"
+						>
+							<option value="">Select level</option>
+							{["100", "200", "300", "400", "500"].map((lvl) => (
+								<option key={lvl} value={lvl}>
+									{lvl} Level
+								</option>
+							))}
+						</select>
 						{errors.level && (
 							<p className="mt-1 text-sm text-red-500">
 								{errors.level.message}

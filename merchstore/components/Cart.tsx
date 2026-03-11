@@ -21,6 +21,7 @@ export default function Cart({
 	const items = useStore((state) => state.cart);
 	const removeFromCart = useStore((state) => state.removeFromCart);
 	const updateCartQuantity = useStore((state) => state.updateCartQuantity);
+	const clearCart = useStore((state) => state.clearCart);
 	const allProducts = useMerchStore((state) => state.allProducts);
 
 	const parsePrice = (price: string) => {
@@ -118,6 +119,23 @@ export default function Cart({
 		updateCartQuantity(originalItem, originalItem.quantity + 1);
 	};
 
+	const handleClearCart = () => {
+		toast("Clear all items?", {
+			description: "All items will be removed from your cart.",
+			action: {
+				label: "Yes, clear",
+				onClick: () => {
+					clearCart();
+					toast.success("Cart cleared");
+				},
+			},
+			cancel: {
+				label: "Cancel",
+				onClick: () => {},
+			},
+		});
+	};
+
 	const handleDecrementQuantity = (
 		originalItem: StoreCartItem,
 		itemName: string,
@@ -157,10 +175,21 @@ export default function Cart({
 													<DialogTitle className="text-xl font-semibold tracking-tight text-gray-900">
 														Shopping cart
 													</DialogTitle>
-													<p className="mt-1 text-sm text-gray-600">
+										<div className="mt-1 flex items-center gap-3">
+													<p className="text-sm text-gray-600">
 														{totalUnits} {totalUnits === 1 ? "item" : "items"}{" "}
 														in your cart
 													</p>
+													{cartItems.length > 0 && (
+														<button
+															type="button"
+															onClick={handleClearCart}
+															className="cursor-pointer text-xs font-medium text-red-500 transition-colors hover:text-red-700"
+														>
+															Clear cart
+														</button>
+													)}
+												</div>
 												</div>
 												<button
 													type="button"
@@ -221,7 +250,7 @@ export default function Cart({
 																					)}
 																				</p>
 																				<p className="text-xs text-gray-500">
-																					Each {item.price}
+																					Each {item.price.startsWith("₦") ? item.price : `₦${item.price}`}
 																				</p>
 																			</div>
 																		</div>

@@ -265,7 +265,7 @@ export default function ProductOverview({
 
 							<div className="mt-4">
 								<p className="text-3xl tracking-tight text-gray-900">
-									{product.price}
+								{product.price.startsWith("₦") ? product.price : `₦${product.price}`}
 								</p>
 								<div className="mt-10">
 									<h3 className="text-sm font-medium text-gray-900">Variant</h3>
