@@ -153,7 +153,7 @@ export const sendOrderConfirmation = async (
 	try {
     const { customerName, reference, totalAmount, orderItems, phoneNumber } = orderDetails;
 console.log(orderDetails)
-		await resend.emails.send({
+		const {data, error } = await resend.emails.send({
 			from: "Technical Unit Merch <ctech.bui@bowen.edu.ng>",
 			to: email,
 			subject: `Order Confirmed: #${reference}`,
@@ -165,6 +165,11 @@ console.log(orderDetails)
 				phoneNumber,
 			),
 		});
+      if (error) {
+      return Response.json({ error }, { status: 500 });
+    }
+
+    return Response.json(data);
 	} catch (error) {
 		console.error("Failed to send order confirmation email:", error);
 	}

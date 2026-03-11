@@ -24,7 +24,7 @@ export async function GET(req: Request) {
 	const { data, error } = await supabaseAdmin
 		.from("orders")
 		.select("*")
-		.order("created_at", { ascending: false });
+		.order("createdAt", { ascending: false });
 
 	if (error) {
 		return NextResponse.json(

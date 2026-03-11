@@ -22,7 +22,7 @@ type Order = {
 	totalQuantity: number;
 	orderItems: OrderItem[];
 	status: string;
-	created_at: string;
+	createdAt: string;
 };
 
 function formatDate(iso: string) {
@@ -66,7 +66,7 @@ function downloadCSV(orders: Order[]) {
 
 	const rows = orders.map((o) => [
 		escape(o.paystackReference),
-		escape(formatDate(o.created_at)),
+		escape(formatDate(o.createdAt)),
 		escape(o.customerName),
 		escape(o.customerEmail),
 		escape(o.phoneNumber),
@@ -350,7 +350,7 @@ export default function Dashboard() {
 							filtered.map((o) => (
 								<tr key={o.id} className="transition hover:bg-gray-50">
 									<td className="px-4 py-3 whitespace-nowrap text-gray-500 text-xs">
-										{formatDate(o.created_at)}
+										{formatDate(o.createdAt)}
 									</td>
 									<td className="px-4 py-3 whitespace-nowrap font-mono text-xs text-gray-700">
 										{o.paystackReference}
