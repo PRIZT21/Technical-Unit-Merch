@@ -13,6 +13,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 const schema = z.object({
 	name: z.string().trim().min(2, "Name must be at least 2 characters"),
 	email: z.email("Invalid email address"),
+	phoneNumber: z
+		.string()
+		.trim()
+		.min(7, "Enter a valid phone number")
+		.max(15, "Phone number is too long")
+		.regex(/^[\d\s\+\-\(\)]+$/, "Enter a valid phone number"),
 	department: z
 		.string()
 		.trim()
@@ -88,6 +94,7 @@ export default function PayStackPayment() {
 		defaultValues: {
 			name: "",
 			email: "",
+			phoneNumber: "",
 			department: "",
 			level: "",
 		},
@@ -108,6 +115,7 @@ export default function PayStackPayment() {
 				body: JSON.stringify({
 					name: values.name,
 					email: values.email,
+					phoneNumber: values.phoneNumber,
 					department: values.department,
 					level: values.level,
 					totalQty,
@@ -201,6 +209,23 @@ export default function PayStackPayment() {
 						{errors.email && (
 							<p className="mt-1 text-sm text-red-500">
 								{errors.email.message}
+							</p>
+						)}
+					</div>
+
+					<div>
+						<label className="mb-1 block text-sm font-medium text-gray-700">
+							Phone Number
+						</label>
+						<input
+							{...register("phoneNumber")}
+							type="number"
+							placeholder="08034523456"
+							className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none ring-0 transition focus:border-black"
+						/>
+						{errors.phoneNumber && (
+							<p className="mt-1 text-sm text-red-500">
+								{errors.phoneNumber.message}
 							</p>
 						)}
 					</div>

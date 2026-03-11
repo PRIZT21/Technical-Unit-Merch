@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { sendOrderConfirmation } from "@/lib/emailService";
 
 type VerifyResponse = {
 	status?: boolean;
@@ -10,6 +11,7 @@ type VerifyResponse = {
 		customer?: { email?: string };
 		metadata?: {
 			customerName?: string;
+			phoneNumber?: string;
 			department?: string;
 			level?: string;
 			totalQuantity?: number;
@@ -116,6 +118,7 @@ export async function GET(
 				paystackReference: reference,
 				status: "success",
 				customerName: metadata.customerName ?? null,
+				phoneNumber: metadata.phoneNumber ?? null,
 				department: metadata.department ?? null,
 				level: metadata.level ?? null,
 				totalQuantity: metadata.totalQuantity ?? 0,
@@ -129,6 +132,25 @@ export async function GET(
 				{ error: "Order save failed", details: error.message },
 				{ status: 500 },
 			);
+		}
+
+		const email = result.data.customer?.email;
+		if (email) {
+			await sendOrderConfirmation(email, {
+				customerName: metadata.customerName ?? "Customer",
+				phoneNumber: metadata.phoneNumber,
+				reference,
+				totalAmount: (result.data.amount ?? 0) / 100,
+				orderItems: Array.isArray(metadata.cartItems)
+					? (metadata.cartItems as {
+							quantity: number;
+							name: string;
+							color: string;
+							size: string;
+							price: number;
+						}[])
+					: [],
+			});
 		}
 	}
 

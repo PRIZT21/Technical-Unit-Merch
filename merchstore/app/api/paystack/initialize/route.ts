@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 type InitializeBody = {
 	name?: unknown;
+	phoneNumber?: unknown;
 	department?: unknown;
 	level?: unknown;
 	totalQty?: unknown;
@@ -35,6 +36,7 @@ export async function POST(req: Request) {
 	}
 
 	const name = body.name;
+	const phoneNumber = body.phoneNumber;
 	const department = body.department;
 	const level = body.level;
 	const email = body.email;
@@ -44,6 +46,7 @@ export async function POST(req: Request) {
 
 	if (
 		!isNonEmptyString(name) ||
+		!isNonEmptyString(phoneNumber) ||
 		!isNonEmptyString(department) ||
 		!isNonEmptyString(level) ||
 		!isNonEmptyString(email) ||
@@ -75,6 +78,7 @@ export async function POST(req: Request) {
 				callback_url: `${siteUrl.replace(/\/$/, "")}/verify-payment`,
 				metadata: {
 					customerName: name,
+					phoneNumber,
 					department,
 					level,
 					cartItems,

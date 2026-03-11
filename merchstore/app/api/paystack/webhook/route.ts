@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { sendOrderConfirmation } from "@/lib/emailService";
 
 type PaystackWebhookEvent = {
 	event?: string;
@@ -8,6 +9,7 @@ type PaystackWebhookEvent = {
 		reference?: string;
 		metadata?: {
 			customerName?: string;
+			phoneNumber?: string;
 			department?: string;
 			level?: string;
 			totalQuantity?: number;
@@ -85,6 +87,7 @@ export async function POST(req: Request) {
 			{
 				customerEmail: event.data?.customer?.email ?? null,
 				customerName: metadata.customerName ?? null,
+				phoneNumber: metadata.phoneNumber ?? null,
 				department: metadata.department ?? null,
 				level: metadata.level ?? null,
 				totalQuantity: metadata.totalQuantity ?? 0,
@@ -100,6 +103,25 @@ export async function POST(req: Request) {
 				{ error: "Database save failed" },
 				{ status: 500 },
 			);
+		}
+
+		const email = event.data?.customer?.email;
+		if (email) {
+			await sendOrderConfirmation(email, {
+				customerName: metadata.customerName ?? "Customer",
+				phoneNumber: metadata.phoneNumber,
+				reference,
+				totalAmount: (event.data?.amount ?? 0) / 100,
+				orderItems: Array.isArray(metadata.cartItems)
+					? (metadata.cartItems as {
+							quantity: number;
+							name: string;
+							color: string;
+							size: string;
+							price: number;
+						}[])
+					: [],
+			});
 		}
 	}
 
