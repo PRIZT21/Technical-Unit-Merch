@@ -58,7 +58,7 @@ export default function ProductOverview({
 				loading: "Adding to cart...",
 				success: (data) => {
 					setHasAddedToCart(true);
-					return `${data.name} has been added to your bag`;
+					return `${data.name} has been added to your cart`;
 				},
 				error: "Could not add to cart",
 			},
@@ -327,7 +327,7 @@ export default function ProductOverview({
 										className="mt-10 flex w-full items-center justify-center rounded-md bg-black px-8 py-3 text-base font-medium text-white transition-colors hover:bg-black/90"
 										onClick={handleAddToCart}
 									>
-										Add to bag
+										Add to cart
 									</Button>
 								)}
 							</div>
