@@ -1,8 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import Image from "next/image";
+import { useState, useCallback, useMemo } from "react";
 
 type OrderItem = {
+	productId?: string | null;
+	variantId?: string | null;
 	name: string;
 	color: string;
 	size: string;
@@ -24,6 +27,65 @@ type Order = {
 	status: string;
 	createdAt: string;
 };
+
+type ItemFilter = "all" | "hoodie" | "sweatshirt" | "tshirt" | "varsity-jacket";
+
+type ItemSalesStats = {
+	hoodie: number;
+	sweatshirt: number;
+	tshirt: number;
+	"varsity-jacket": number;
+};
+
+function getItemType(
+	item: Pick<OrderItem, "name" | "productId" | "variantId">,
+): Exclude<ItemFilter, "all"> | "other" {
+	const normalizedName = String(item.name ?? "")
+		.toLowerCase()
+		.replace(/[-_]/g, " ")
+		.replace(/\s+/g, " ")
+		.trim();
+	const normalizedHints =
+		`${String(item.productId ?? "")} ${String(item.variantId ?? "")}`
+			.toLowerCase()
+			.replace(/[-_]/g, " ")
+			.replace(/\s+/g, " ")
+			.trim();
+	const normalized = `${normalizedName} ${normalizedHints}`.trim();
+
+	if (normalizedHints.includes("varsity")) return "varsity-jacket";
+	if (
+		normalizedHints.includes("sweatshirt") ||
+		normalizedHints.includes("sweat shirt")
+	) {
+		return "sweatshirt";
+	}
+	if (normalizedHints.includes("hoodie")) return "hoodie";
+	if (
+		normalizedHints.includes("tshirt") ||
+		normalizedHints.includes("t shirt") ||
+		normalizedHints.includes("t-shirt")
+	) {
+		return "tshirt";
+	}
+
+	if (normalized.includes("varsity")) return "varsity-jacket";
+	if (normalized.includes("sweatshirt") || normalized.includes("sweat shirt")) {
+		return "sweatshirt";
+	}
+	if (/\bhoodie\b/.test(normalized)) return "hoodie";
+	if (
+		normalized.includes("tshirt") ||
+		normalized.includes("t shirt") ||
+		normalized.includes("t-shirt") ||
+		/\bt\s?shirt\b/.test(normalized) ||
+		/\btee\b/.test(normalized)
+	) {
+		return "tshirt";
+	}
+
+	return "other";
+}
 
 function formatDate(iso: string) {
 	return new Date(iso).toLocaleString("en-NG", {
@@ -169,6 +231,7 @@ export default function Dashboard() {
 	const [error, setError] = useState("");
 	const [search, setSearch] = useState("");
 	const [statusFilter, setStatusFilter] = useState("all");
+	const [itemFilter, setItemFilter] = useState<ItemFilter>("all");
 
 	const fetchOrders = useCallback(async (s: string) => {
 		setLoading(true);
@@ -207,8 +270,6 @@ export default function Dashboard() {
 		void fetchOrders(s);
 	};
 
-	if (!secret) return <PasswordGate onAuth={handleAuth} />;
-
 	const filtered = orders.filter((o) => {
 		const matchesSearch =
 			search === "" ||
@@ -217,12 +278,32 @@ export default function Dashboard() {
 				.toLowerCase()
 				.includes(search.toLowerCase());
 		const matchesStatus = statusFilter === "all" || o.status === statusFilter;
-		return matchesSearch && matchesStatus;
+		const matchesItem =
+			itemFilter === "all" ||
+			o.orderItems.some((item) => getItemType(item) === itemFilter);
+		return matchesSearch && matchesStatus && matchesItem;
 	});
 
 	const totalRevenue = orders.reduce((sum, o) => sum + o.totalAmount, 0);
 	const totalQty = orders.reduce((sum, o) => sum + o.totalQuantity, 0);
+	const itemSales = useMemo<ItemSalesStats>(() => {
+		const soldOrders = orders.filter((order) => order.status === "success");
 
+		return soldOrders.reduce<ItemSalesStats>(
+			(stats, order) => {
+				order.orderItems.forEach((item) => {
+					const itemType = getItemType(item);
+					if (itemType === "other") return;
+					stats[itemType] += Number(item.quantity) || 0;
+				});
+
+				return stats;
+			},
+			{ hoodie: 0, sweatshirt: 0, tshirt: 0, "varsity-jacket": 0 },
+		);
+	}, [orders]);
+
+	if (!secret) return <PasswordGate onAuth={handleAuth} />;
 	return (
 		<div className="min-h-screen bg-gray-100 p-4 md:p-8">
 			{/* Header */}
@@ -272,6 +353,25 @@ export default function Dashboard() {
 				))}
 			</div>
 
+			<div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+				{[
+					{ label: "Hoodies Sold", value: itemSales.hoodie },
+					{ label: "Sweatshirts Sold", value: itemSales.sweatshirt },
+					{ label: "T-Shirts Sold", value: itemSales.tshirt },
+					{
+						label: "Varsity Jackets Sold",
+						value: itemSales["varsity-jacket"],
+					},
+				].map(({ label, value }) => (
+					<div key={label} className="rounded-xl bg-white p-4 shadow-sm">
+						<p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+							{label}
+						</p>
+						<p className="mt-1 text-xl font-bold text-gray-900">{value}</p>
+					</div>
+				))}
+			</div>
+
 			{/* Filters */}
 			<div className="mb-4 flex flex-col gap-3 sm:flex-row">
 				<input
@@ -290,6 +390,17 @@ export default function Dashboard() {
 					<option value="success">Success</option>
 					<option value="pending">Pending</option>
 					<option value="failed">Failed</option>
+				</select>
+				<select
+					value={itemFilter}
+					onChange={(e) => setItemFilter(e.target.value as ItemFilter)}
+					className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none transition focus:border-black"
+				>
+					<option value="all">All items</option>
+					<option value="hoodie">Hoodies</option>
+					<option value="sweatshirt">Sweatshirts</option>
+					<option value="tshirt">T-Shirts</option>
+					<option value="varsity-jacket">Varsity Jackets</option>
 				</select>
 			</div>
 
