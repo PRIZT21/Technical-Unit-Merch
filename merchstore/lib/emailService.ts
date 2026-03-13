@@ -61,7 +61,7 @@ function buildOrderConfirmationHtml(
           <!-- Header -->
           <tr>
             <td style="background-color:#000000;border-radius:12px 12px 0 0;padding:32px 40px;text-align:center;">
-              <p style="margin:0 0 4px 0;font-size:13px;color:#bbf7d0;letter-spacing:2px;text-transform:uppercase;font-weight:600;">Bowen University</p>
+              <p style="margin:0 0 4px 0;font-size:13px;color:#ffffff;letter-spacing:2px;text-transform:uppercase;font-weight:600;">Bowen University</p>
               <h1 style="margin:0;font-size:26px;color:#ffffff;font-weight:700;letter-spacing:-0.5px;">Technical Unit Merch</h1>
             </td>
           </tr>
