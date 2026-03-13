@@ -154,7 +154,7 @@ export const sendOrderConfirmation = async (
     const { customerName, reference, totalAmount, orderItems, phoneNumber } = orderDetails;
 console.log(orderDetails)
 		const {data, error } = await resend.emails.send({
-			from: "Technical Unit Merch <bowentechnicalunitmerch.com.ng>",
+			from: "Technical Unit Merch <orders@bowentechnicalunitmerch.com.ng>",
 			to: email,
 			subject: `Order Confirmed: #${reference}`,
 			html: buildOrderConfirmationHtml(
