@@ -10,6 +10,10 @@ import { useStore } from "@/lib/store/useStore";
 import { useMerchStore } from "@/store/useProductStore";
 import { toast } from "sonner";
 import QuantityCount from "@/components/ui/QuantityCount";
+import {
+	calculatePaystackFee,
+	calculatePaystackTotal,
+} from "@/lib/paystackFees";
 
 export default function Cart({
 	open,
@@ -70,8 +74,12 @@ export default function Cart({
 		(count, item) => count + item.quantity,
 		0,
 	);
+	const paystackFee = calculatePaystackFee(subtotal);
+	const totalCharge = calculatePaystackTotal(subtotal);
 
-	const totalAmount = formatCurrency(subtotal);
+	const subtotalAmount = formatCurrency(subtotal);
+	const paystackFeeAmount = formatCurrency(paystackFee);
+	const totalChargeAmount = formatCurrency(totalCharge);
 
 	type StoreCartItem = (typeof items)[number];
 
@@ -312,14 +320,22 @@ export default function Cart({
 										<div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
 											<div className="flex items-center justify-between text-base font-semibold text-gray-900">
 												<p>Subtotal</p>
-												<p>{totalAmount}</p>
+												<p>{subtotalAmount}</p>
+											</div>
+											<div className="mt-2 flex items-center justify-between text-sm text-gray-600">
+												<p>Paystack Fee</p>
+												<p>{paystackFeeAmount}</p>
+											</div>
+											<div className="mt-2 flex items-center justify-between border-t border-gray-200 pt-2 text-xl font-semibold text-gray-90">
+												<p>Total Charge</p>
+												<p>{totalChargeAmount}</p>
 											</div>
 											<div className="mt-2 flex items-center justify-between text-sm text-gray-600">
 												<p>Items</p>
 												<p>{totalUnits}</p>
 											</div>
 											<p className="mt-3 text-xs text-gray-500">
-												Shipping and taxes calculated at checkout.
+												Shipping and taxes are calculated at checkout.
 											</p>
 											<div className="mt-4">
 												<a

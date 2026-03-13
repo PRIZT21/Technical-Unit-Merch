@@ -1,4 +1,9 @@
 import { NextResponse } from "next/server";
+import {
+	calculatePaystackFee,
+	calculatePaystackTotal,
+	nairaToKobo,
+} from "@/lib/paystackFees";
 
 type InitializeBody = {
 	name?: unknown;
@@ -41,7 +46,7 @@ export async function POST(req: Request) {
 	const level = body.level;
 	const email = body.email;
 	const totalQty = Number(body.totalQty);
-	const amount = Number(body.amount);
+	const subtotalAmount = Number(body.amount);
 	const cartItems = Array.isArray(body.cartItems) ? body.cartItems : [];
 
 	if (
@@ -52,8 +57,8 @@ export async function POST(req: Request) {
 		!isNonEmptyString(email) ||
 		!Number.isFinite(totalQty) ||
 		totalQty <= 0 ||
-		!Number.isFinite(amount) ||
-		amount <= 0 ||
+		!Number.isFinite(subtotalAmount) ||
+		subtotalAmount <= 0 ||
 		cartItems.length === 0
 	) {
 		return NextResponse.json(
@@ -62,7 +67,9 @@ export async function POST(req: Request) {
 		);
 	}
 
-	const amountInKobo = Math.round(amount * 100);
+	const paystackFee = calculatePaystackFee(subtotalAmount);
+	const totalAmount = calculatePaystackTotal(subtotalAmount);
+	const amountInKobo = nairaToKobo(totalAmount);
 
 	const response = await fetch(
 		"https://api.paystack.co/transaction/initialize",
@@ -81,6 +88,9 @@ export async function POST(req: Request) {
 					phoneNumber,
 					department,
 					level,
+					subtotalAmount,
+					paystackFee,
+					totalAmount,
 					cartItems,
 					totalQuantity: totalQty,
 				},

@@ -6,7 +6,7 @@ import Header from "@/components/ui/Header";
 export default function ConditionalHeader() {
 	const pathname = usePathname();
 
-	if (pathname.startsWith("/dashboard")) {
+	if (pathname.startsWith("/dashboard") || pathname.startsWith("/Checkout")) {
 		return null;
 	}
 
