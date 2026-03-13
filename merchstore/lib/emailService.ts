@@ -60,7 +60,7 @@ function buildOrderConfirmationHtml(
 
           <!-- Header -->
           <tr>
-            <td style="background-color:#16a34a;border-radius:12px 12px 0 0;padding:32px 40px;text-align:center;">
+            <td style="background-color:#000000;border-radius:12px 12px 0 0;padding:32px 40px;text-align:center;">
               <p style="margin:0 0 4px 0;font-size:13px;color:#bbf7d0;letter-spacing:2px;text-transform:uppercase;font-weight:600;">Bowen University</p>
               <h1 style="margin:0;font-size:26px;color:#ffffff;font-weight:700;letter-spacing:-0.5px;">Technical Unit Merch</h1>
             </td>
@@ -121,7 +121,7 @@ function buildOrderConfirmationHtml(
                   <td style="padding:16px 20px;">
                     <p style="margin:0 0 4px 0;font-size:13px;font-weight:700;color:#92400e;">📦 Pickup Information</p>
                     <p style="margin:0;font-size:13px;color:#78350f;line-height:1.6;">
-                      Your merch will be ready for pickup at the <strong>Technical Unit office</strong>. You'll receive another email when your order is ready. Please quote your order reference when collecting.
+                      Your merch will be ready for pickup at the <strong>Technical Unit</strong>. Thank you for your purchase!
                     </p>
                   </td>
                 </tr>
