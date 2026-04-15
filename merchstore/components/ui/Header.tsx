@@ -75,7 +75,7 @@ export default function Header() {
 						</button>
 					</div> */}
 
-					<div className=" lg:flex lg:flex-1 lg:justify-end">
+					{/* <div className=" lg:flex lg:flex-1 lg:justify-end">
 						<StyledBadge badgeContent={totalItems} color="secondary">
 							<button
 								type="button"
@@ -86,7 +86,7 @@ export default function Header() {
 								<ShoppingCart />
 							</button>
 						</StyledBadge>
-					</div>
+					</div> */}
 				</motion.nav>
 {/* remove hamburger menu on mobile screens to display only cart */}
 				{/* <AnimatePresence>
