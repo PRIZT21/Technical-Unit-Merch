@@ -7,13 +7,14 @@ import { ShoppingCart } from "lucide-react";
 import { useMerchStore } from "@/store/useProductStore";
 import ProductOverview from "@/components/ProductOverview";
 import { AnimatePresence, motion } from "framer-motion";
+import type { Product } from "@/types/inventory";
 
 export default function ProductList({
 	filteredProducts,
 	selectedColor,
 	selectedSize,
 }: {
-	filteredProducts: typeof products;
+	filteredProducts: Product[];
 	selectedColor: string | null;
 	selectedSize: string | null;
 }) {
