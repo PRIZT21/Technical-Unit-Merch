@@ -75,18 +75,18 @@ export default function Header() {
 						</button>
 					</div> */}
 
-					<div className=" lg:flex lg:flex-1 lg:justify-end">
+					{/* <div className=" lg:flex lg:flex-1 lg:justify-end">
 						<StyledBadge badgeContent={totalItems} color="secondary">
 							<button
 								type="button"
 								onClick={() => setOpen(true)}
-								className="rounded-full border-2 border-gray-300 p-2 text-gray-900"
+								className="rounded-full border-2 border-gray-300 p-2 text-gray-900 cursor-pointer"
 								aria-label="Open cart"
 							>
 								<ShoppingCart />
 							</button>
 						</StyledBadge>
-					</div>
+					</div> */}
 				</motion.nav>
 {/* remove hamburger menu on mobile screens to display only cart */}
 				{/* <AnimatePresence>

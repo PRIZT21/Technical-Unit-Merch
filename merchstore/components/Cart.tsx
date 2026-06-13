@@ -7,9 +7,13 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useStore } from "@/lib/store/useStore";
-import { products } from "@/lib/products";
+import { useMerchStore } from "@/store/useProductStore";
 import { toast } from "sonner";
 import QuantityCount from "@/components/ui/QuantityCount";
+import {
+	calculatePaystackFee,
+	calculatePaystackTotal,
+} from "@/lib/paystackFees";
 
 export default function Cart({
 	open,
@@ -21,6 +25,8 @@ export default function Cart({
 	const items = useStore((state) => state.cart);
 	const removeFromCart = useStore((state) => state.removeFromCart);
 	const updateCartQuantity = useStore((state) => state.updateCartQuantity);
+	const clearCart = useStore((state) => state.clearCart);
+	const allProducts = useMerchStore((state) => state.allProducts);
 
 	const parsePrice = (price: string) => {
 		const numeric = Number(price.replace(/[^\d.]/g, ""));
@@ -38,7 +44,8 @@ export default function Cart({
 		formatCurrency(parsePrice(price) * quantity);
 
 	const cartItems = items.map((item) => {
-		const product = products.find((p) => p.productId === item.productId);
+		const product = allProducts.find((p) => p.productId === item.productId);
+
 		const variantById = product?.variants.find(
 			(v) => v.variantId === item.variantId,
 		);
@@ -67,8 +74,12 @@ export default function Cart({
 		(count, item) => count + item.quantity,
 		0,
 	);
+	const paystackFee = calculatePaystackFee(subtotal);
+	const totalCharge = calculatePaystackTotal(subtotal);
 
-	const totalAmount = formatCurrency(subtotal);
+	const subtotalAmount = formatCurrency(subtotal);
+	const paystackFeeAmount = formatCurrency(paystackFee);
+	const totalChargeAmount = formatCurrency(totalCharge);
 
 	type StoreCartItem = (typeof items)[number];
 
@@ -89,7 +100,7 @@ export default function Cart({
 				}),
 			{
 				loading: "Removing from cart...",
-				success: (data) => `${data.name} has been removed from your bag`,
+				success: (data) => `${data.name} has been removed from your cart`,
 				error: "Could not remove item",
 			},
 		);
@@ -100,7 +111,7 @@ export default function Cart({
 		itemName: string,
 	) => {
 		toast(`Remove ${itemName}?`, {
-			description: "This item will be removed from your bag.",
+			description: "This item will be removed from your cart.",
 			action: {
 				label: "Yes",
 				onClick: () => handleRemoveFromCart(originalItem, itemName),
@@ -114,6 +125,23 @@ export default function Cart({
 
 	const handleIncrementQuantity = (originalItem: StoreCartItem) => {
 		updateCartQuantity(originalItem, originalItem.quantity + 1);
+	};
+
+	const handleClearCart = () => {
+		toast("Clear all items?", {
+			description: "All items will be removed from your cart.",
+			action: {
+				label: "Yes, clear",
+				onClick: () => {
+					clearCart();
+					toast.success("Cart cleared");
+				},
+			},
+			cancel: {
+				label: "Cancel",
+				onClick: () => {},
+			},
+		});
 	};
 
 	const handleDecrementQuantity = (
@@ -155,10 +183,21 @@ export default function Cart({
 													<DialogTitle className="text-xl font-semibold tracking-tight text-gray-900">
 														Shopping cart
 													</DialogTitle>
-													<p className="mt-1 text-sm text-gray-600">
-														{totalUnits} {totalUnits === 1 ? "item" : "items"}{" "}
-														in your bag
-													</p>
+													<div className="mt-1 flex items-center gap-3">
+														<p className="text-sm text-gray-600">
+															{totalUnits} {totalUnits === 1 ? "item" : "items"}{" "}
+															in your cart
+														</p>
+														{cartItems.length > 0 && (
+															<button
+																type="button"
+																onClick={handleClearCart}
+																className="cursor-pointer text-xs font-medium text-red-500 transition-colors hover:text-red-700"
+															>
+																Clear cart
+															</button>
+														)}
+													</div>
 												</div>
 												<button
 													type="button"
@@ -219,7 +258,10 @@ export default function Cart({
 																					)}
 																				</p>
 																				<p className="text-xs text-gray-500">
-																					Each {item.price}
+																					Each{" "}
+																					{item.price.startsWith("₦")
+																						? item.price
+																						: `₦${item.price}`}
 																				</p>
 																			</div>
 																		</div>
@@ -278,19 +320,27 @@ export default function Cart({
 										<div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
 											<div className="flex items-center justify-between text-base font-semibold text-gray-900">
 												<p>Subtotal</p>
-												<p>{totalAmount}</p>
+												<p>{subtotalAmount}</p>
+											</div>
+											<div className="mt-2 flex items-center justify-between text-sm text-gray-600">
+												<p>Paystack Fee</p>
+												<p>{paystackFeeAmount}</p>
+											</div>
+											<div className="mt-2 flex items-center justify-between border-t border-gray-200 pt-2 text-xl font-semibold text-gray-90">
+												<p>Total Charge</p>
+												<p>{totalChargeAmount}</p>
 											</div>
 											<div className="mt-2 flex items-center justify-between text-sm text-gray-600">
 												<p>Items</p>
 												<p>{totalUnits}</p>
 											</div>
 											<p className="mt-3 text-xs text-gray-500">
-												Shipping and taxes calculated at checkout.
+												Shipping and taxes are calculated at checkout.
 											</p>
 											<div className="mt-4">
-												<button
+												<a
+													href="/Checkout"
 													type="button"
-													disabled={cartItems.length === 0}
 													className={`flex w-full items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-xs transition-colors ${
 														cartItems.length === 0
 															? "cursor-not-allowed bg-gray-300"
@@ -298,7 +348,7 @@ export default function Cart({
 													}`}
 												>
 													Checkout
-												</button>
+												</a>
 											</div>
 										</div>
 										<div className="mt-5 flex justify-center text-center text-sm text-gray-500">
